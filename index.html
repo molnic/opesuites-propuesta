@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta de Transformación Digital | Proyecto OpeSuites</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans (Tech/Modern feel) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (via CDN for standalone file) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0B0F19',     /* Almost Black */
+                            surface: '#151B2B',  /* Dark Blue Grey */
+                            accent: '#3B82F6',   /* Electric Blue */
+                            glow: '#6366F1',     /* Indigo Glow */
+                            success: '#10B981',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        body {
+            background-color: #0B0F19;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(21, 27, 43, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Typography Gradients */
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-accent {
+            background: linear-gradient(to right, #60A5FA, #A78BFA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Scroll Trigger Animation Setup */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Decorative Backgrounds */
+        .bg-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-accent selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass-panel border-b border-white/5 top-0 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold tracking-tight">
+                Proyecto <span class="text-brand-accent">OpeSuites</span>
+            </div>
+            <div class="hidden md:flex gap-8 text-sm font-medium text-slate-400">
+                <a href="#diagnosis" class="hover:text-white transition-colors">Diagnóstico</a>
+                <a href="#ecosystem" class="hover:text-white transition-colors">Solución</a>
+                <a href="#retainer" class="hover:text-white transition-colors">Continuidad</a>
+            </div>
+            <a href="#pricing" class="px-5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-sm font-semibold transition-all border border-white/10">
+                Ver Inversión
+            </a>
+        </div>
+    </nav>
+
+    <!-- 1. Hero Section: La Promesa -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden grid-bg">
+        <div class="bg-glow top-0 left-1/4 animate-pulse-slow"></div>
+        <div class="bg-glow bottom-0 right-1/4 bg-brand-glow opacity-20"></div>
+
+        <div class="max-w-5xl mx-auto px-6 text-center z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-accent/10 border border-brand-accent/20 text-brand-accent text-xs font-semibold mb-8 reveal">
+                <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
+                ESTRATEGIA DIGITAL
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6 reveal delay-100">
+                De Operar en Excel a <br>
+                <span class="text-gradient-accent">Automatizar tu Negocio.</span>
+            </h1>
+            
+            <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-10 reveal delay-200">
+                Transformamos tu operación en un ecosistema digital automatizado. Elimina el error humano y gestiona tu negocio con total tranquilidad y transparencia.
+            </p>
+            
+            <div class="flex flex-col md:flex-row gap-4 justify-center items-center reveal delay-300">
+                <a href="#ecosystem" class="px-8 py-4 rounded-lg bg-brand-accent hover:bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/25 transition-all transform hover:scale-105">
+                    Explorar la Solución
+                </a>
+                <p class="text-sm text-slate-500 mt-4 md:mt-0">
+                    <i data-lucide="lock" class="inline w-4 h-4 mr-1"></i> Documento Confidencial
+                </p>
+            </div>
+        </div>
+        
+        <!-- Abstract Tech Visual -->
+        <div class="absolute bottom-0 w-full h-64 bg-gradient-to-t from-brand-dark to-transparent"></div>
+    </section>
+
+    <!-- 2. Diagnóstico: El Dolor -->
+    <section id="diagnosis" class="py-24 relative bg-brand-dark">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <h2 class="text-3xl font-bold mb-6 text-white">Desafíos del Crecimiento Actual</h2>
+                    <p class="text-slate-400 mb-6 text-lg">
+                        Actualmente, tu negocio depende de la operacion humana, cadenas de WhatsApp y exceles. Esto puede generar un riesgo financiero y operativo.
+                    </p>
+                    
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-4">
+                            <div class="p-2 bg-orange-500/10 rounded-lg text-orange-400 shrink-0"><i data-lucide="alert-triangle"></i></div>
+                            <div>
+                                <h4 class="text-white font-semibold">Gestión Financiera Dispersa</h4>
+                                <p class="text-sm text-slate-500">El seguimiento manual de pagos y reservas en Excel aumenta la probabilidad de inconsistencias involuntarias.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="p-2 bg-orange-500/10 rounded-lg text-orange-400 shrink-0"><i data-lucide="clock"></i></div>
+                            <div>
+                                <h4 class="text-white font-semibold">Manualidad Operativa</h4>
+                                <p class="text-sm text-slate-500">Si tu equipo no contesta a tiempo, el negocio se detiene. El sistema actual tiene un gran margen de mejora para escalar.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="p-2 bg-orange-500/10 rounded-lg text-orange-400 shrink-0"><i data-lucide="sparkles"></i></div>
+                            <div>
+                                <h4 class="text-white font-semibold">Imagen Digital por Potenciar</h4>
+                                <p class="text-sm text-slate-500">Tu web actual es funcional, pero existe una gran oportunidad para que refleje el verdadero estatus premium de tus apartamentos.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Visual Representation of Chaos vs Order -->
+                <div class="relative h-[400px] glass-panel rounded-2xl border border-white/5 p-8 flex flex-col justify-center items-center reveal delay-200 overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-red-900/10 to-transparent"></div>
+                    
+                    <!-- Floating Chaotic Elements (Representing Excel/Manual) -->
+                    <div class="absolute top-10 left-10 p-4 bg-white/5 rounded backdrop-blur rotate-[-6deg] w-48 text-xs font-mono text-red-300 border border-red-500/30 opacity-60">
+                        ERROR: Double Booking<br>Unit 402 - 12 Oct
+                    </div>
+                    <div class="absolute bottom-6 right-6 p-4 bg-white/5 rounded backdrop-blur rotate-[12deg] w-40 text-xs font-mono text-slate-400 border border-white/10 opacity-60">
+                        WhastApp: ¿Me confirmas precio?
+                    </div>
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10 w-full px-4">
+                        <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/50 backdrop-blur-sm">
+                            <i data-lucide="activity" class="text-red-400 w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Fricción Actual</h3>
+                        <p class="text-sm text-slate-500 mt-2 px-3 py-1 rounded-full inline-block backdrop-blur-sm bg-brand-dark/20">Procesos Manuales = Límite de Crecimiento</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Solución 1: El Cerebro (CRM) -->
+    <section id="ecosystem" class="py-32 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <span class="text-brand-accent font-semibold tracking-wider text-sm">FASE 1: OPERACIONES</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-6">El Cerebro: Tu CRM a Medida</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">
+                    Dejamos atrás Excel. Construimos un sistema centralizado diseñado específicamente para tu flujo de trabajo. Control total desde cualquier dispositivo.
+                </p>
+            </div>
+
+            <!-- Dashboard Mockup -->
+            <div class="relative glass-panel rounded-xl border border-white/10 p-2 md:p-4 shadow-2xl reveal delay-200">
+                <!-- Mockup Browser Bar -->
+                <div class="h-8 bg-black/40 rounded-t-lg flex items-center px-4 gap-2 mb-4">
+                    <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                    <div class="ml-4 px-3 py-1 bg-white/5 rounded-full text-[10px] text-slate-500 w-64">admin.opesuites.com/dashboard</div>
+                </div>
+
+                <!-- Mockup Content -->
+                <div class="grid grid-cols-12 gap-6 p-4 min-h-[500px]">
+                    <!-- Sidebar -->
+                    <div class="col-span-2 hidden md:flex flex-col gap-4 border-r border-white/5 pr-4">
+                        <div class="h-10 w-10 bg-brand-accent rounded-lg mb-8"></div>
+                        <div class="p-3 bg-white/10 rounded text-brand-accent text-sm font-medium flex items-center gap-2"><i data-lucide="layout-dashboard" class="w-4 h-4"></i> Panel</div>
+                        <div class="p-3 hover:bg-white/5 rounded text-slate-400 text-sm font-medium flex items-center gap-2 transition"><i data-lucide="calendar" class="w-4 h-4"></i> Calendario</div>
+                        <div class="p-3 hover:bg-white/5 rounded text-slate-400 text-sm font-medium flex items-center gap-2 transition"><i data-lucide="users" class="w-4 h-4"></i> Huéspedes</div>
+                        <div class="p-3 hover:bg-white/5 rounded text-slate-400 text-sm font-medium flex items-center gap-2 transition"><i data-lucide="bar-chart" class="w-4 h-4"></i> Finanzas</div>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="col-span-12 md:col-span-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Stat Cards -->
+                        <div class="bg-brand-surface rounded-xl p-6 border border-white/5 relative overflow-hidden group">
+                            <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:scale-110 transition"><i data-lucide="credit-card" class="w-16 h-16"></i></div>
+                            <p class="text-slate-400 text-sm">Ingresos Mes</p>
+                            <h3 class="text-3xl font-bold text-white mt-1">$45,200</h3>
+                            <div class="mt-4 text-xs text-green-400 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> +12% vs mes anterior</div>
+                        </div>
+                        <div class="bg-brand-surface rounded-xl p-6 border border-white/5 relative overflow-hidden group">
+                            <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:scale-110 transition"><i data-lucide="home" class="w-16 h-16"></i></div>
+                            <p class="text-slate-400 text-sm">Ocupación</p>
+                            <h3 class="text-3xl font-bold text-white mt-1">88%</h3>
+                            <div class="w-full bg-white/10 h-1 mt-4 rounded-full overflow-hidden">
+                                <div class="bg-brand-accent h-full w-[88%]"></div>
+                            </div>
+                        </div>
+                        <div class="bg-brand-surface rounded-xl p-6 border border-white/5 relative overflow-hidden group">
+                            <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:scale-110 transition"><i data-lucide="bell" class="w-16 h-16"></i></div>
+                            <p class="text-slate-400 text-sm">Check-ins Hoy</p>
+                            <h3 class="text-3xl font-bold text-white mt-1">4</h3>
+                            <div class="flex -space-x-2 mt-4">
+                                <div class="w-6 h-6 rounded-full bg-slate-600 border border-brand-surface"></div>
+                                <div class="w-6 h-6 rounded-full bg-slate-500 border border-brand-surface"></div>
+                                <div class="w-6 h-6 rounded-full bg-slate-400 border border-brand-surface"></div>
+                            </div>
+                        </div>
+
+                        <!-- Calendar View Mock -->
+                        <div class="col-span-1 md:col-span-3 bg-brand-surface rounded-xl border border-white/5 p-6 mt-2">
+                            <div class="flex justify-between items-center mb-6">
+                                <h4 class="font-semibold">Estado de Propiedades en Tiempo Real</h4>
+                                <button class="text-xs bg-brand-accent px-3 py-1 rounded text-white hover:bg-blue-600 transition">Nueva Reserva</button>
+                            </div>
+                            <!-- Mock Gantt Chart -->
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-24 text-xs text-slate-400">Apt 101</div>
+                                    <div class="flex-1 h-8 bg-white/5 rounded relative">
+                                        <div class="absolute left-[10%] w-[30%] h-full bg-blue-500/20 border-l-2 border-blue-500 rounded flex items-center px-2 text-[10px] text-blue-300">Martinez (Airbnb)</div>
+                                        <div class="absolute left-[60%] w-[20%] h-full bg-green-500/20 border-l-2 border-green-500 rounded flex items-center px-2 text-[10px] text-green-300">Gomez (Directo)</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-24 text-xs text-slate-400">Loft 505</div>
+                                    <div class="flex-1 h-8 bg-white/5 rounded relative">
+                                        <div class="absolute left-[20%] w-[50%] h-full bg-purple-500/20 border-l-2 border-purple-500 rounded flex items-center px-2 text-[10px] text-purple-300">Smith (Booking)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Features Grid -->
+            <div class="grid md:grid-cols-3 gap-8 mt-12">
+                <div class="text-center reveal delay-300">
+                    <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-accent"><i data-lucide="wand-2"></i></div>
+                    <h3 class="font-bold mb-2">Cero Ingreso Manual</h3>
+                    <p class="text-sm text-slate-400">El sistema se "diligencia" solo. Olvídate de pasar datos a Excel; cada reserva se registra automáticamente y sin errores humanos.</p>
+                </div>
+                <div class="text-center reveal delay-400">
+                    <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-accent"><i data-lucide="line-chart"></i></div>
+                    <h3 class="font-bold mb-2">Inteligencia de Negocio</h3>
+                    <p class="text-sm text-slate-400">Deja de cruzar tablas en Excel. Visualiza métricas de ocupación y rentabilidad en tiempo real para tomar decisiones estratégicas.</p>
+                </div>
+                <div class="text-center reveal delay-500">
+                    <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-accent"><i data-lucide="smartphone"></i></div>
+                    <h3 class="font-bold mb-2">Oficina en el Bolsillo</h3>
+                    <p class="text-sm text-slate-400">Gestiona check-ins, limpieza y finanzas desde tu celular, estés donde estés.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Solución 2: La Cara (Web Pública) -->
+    <section class="py-32 relative bg-white text-brand-dark">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="order-2 md:order-1 reveal">
+                    <span class="text-brand-accent font-bold tracking-wider text-sm uppercase">Fase 2: La Experiencia</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-6 text-black">No es una Web,<br>es un Concierge Digital.</h2>
+                    <p class="text-slate-600 text-lg mb-8">
+                        Tu nueva presencia web estará diseñada con una sola obsesión: <strong>Confianza y Conversión</strong>. Estética de hotel boutique con la tecnología de una plataforma de reservas global.
+                    </p>
+                    
+                    <ul class="space-y-6">
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-brand-surface text-white flex items-center justify-center font-bold shrink-0 mt-1">1</div>
+                            <div>
+                                <h4 class="font-bold text-lg">Diseño Front-End de Alta Confianza</h4>
+                                <p class="text-slate-500">Un 'Look & Feel' totalmente renovado que proyecta lujo y seguridad, integrándose visualmente con tu motor actual (Cloudbeds).</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-brand-surface text-white flex items-center justify-center font-bold shrink-0 mt-1">2</div>
+                            <div>
+                                <h4 class="font-bold text-lg">Storytelling Visual</h4>
+                                <p class="text-slate-500">Layouts inmersivos que venden la experiencia de la ciudad, no solo las camas.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Web Preview Card (Light/Luxury Theme) -->
+                <div class="order-1 md:order-2 relative reveal delay-200">
+                    <!-- Decorative Elements behind -->
+                    <div class="absolute -right-10 -bottom-10 w-full h-full bg-slate-100 rounded-2xl -z-10"></div>
+                    
+                    <div class="bg-white rounded-xl shadow-2xl overflow-hidden border border-slate-200 transform rotate-1 hover:rotate-0 transition duration-500">
+                        <!-- Image Area: STATIC SCREENSHOT -->
+                        <div class="relative h-80 bg-slate-100 overflow-hidden group border-b border-slate-100">
+                            <!-- 
+                                *** INSTRUCCIÓN: ***
+                                Guarda tu captura de pantalla como "opesuites-preview.jpg" en la misma carpeta.
+                                He añadido un 'onerror' para que cargue una imagen de stock elegante si no encuentra el archivo local.
+                            -->
+                            <img 
+                                src="./opesuites-preview.jpg" 
+                                onerror="this.src='https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop'"
+                                alt="OpeSuites Home - Estancias de Lujo" 
+                                class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                            >
+                            
+                            <!-- Overlay gradient for depth -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                            <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur px-4 py-2 rounded text-xs font-bold tracking-widest uppercase shadow-sm flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-brand-accent"></span>
+                                Diseño Propuesto
+                            </div>
+                        </div>
+                        <!-- Content Area -->
+                        <div class="p-8">
+                            <h3 class="font-serif text-3xl mb-2 text-black">OpeSuites Experience</h3>
+                            <div class="flex gap-4 text-xs text-slate-500 uppercase tracking-wide mb-6">
+                                <span><i data-lucide="wifi" class="inline w-3 h-3"></i> Alta Velocidad</span>
+                                <span><i data-lucide="map-pin" class="inline w-3 h-3"></i> Ubicación Prime</span>
+                            </div>
+                            <div class="flex justify-between items-end border-t border-slate-100 pt-6">
+                                <div>
+                                    <p class="text-slate-400 text-sm">Integración con Cloudbeds</p>
+                                    <p class="text-lg font-bold text-brand-accent">Sincronizado</p>
+                                </div>
+                                <a href="https://molnic.github.io/opesuites/" target="_blank" class="bg-black text-white px-6 py-3 rounded hover:bg-slate-800 transition flex items-center gap-2 group">
+                                    Ver Website (propuesta) <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Inversión (Pricing) -->
+    <section id="pricing" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-bold mb-4">Estructura de Inversión Modular</h2>
+                <p class="text-slate-400">Selecciona los módulos que tu negocio necesita hoy. Escala cuando estés lista.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Card 1: CRM (El Cerebro) -->
+                <div class="glass-panel rounded-2xl p-6 border border-white/5 reveal flex flex-col hover:border-brand-accent/30 transition duration-300">
+                    <div class="mb-6">
+                        <span class="text-xs font-bold text-slate-500 tracking-widest uppercase">Módulo Operativo</span>
+                        <h3 class="text-2xl font-bold mt-2 text-white">CRM & Dashboard</h3>
+                        <p class="text-slate-400 text-xs mt-2">Para centralizar y controlar el negocio.</p>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8 text-sm text-slate-300 flex-1">
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> <span>Sincronización Automática en Tiempo Real</span></li>
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> <span>Diseño de Dashboard a Medida</span></li>
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> <span>Calendario Multi-propiedad</span></li>
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> <span>Base de Datos de Clientes</span></li>
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> <span>Reportes Financieros Básicos</span></li>
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> <span>Panel Administrativo en Celular</span></li>
+                    </ul>
+
+                    <div class="border-t border-white/10 pt-6 mt-auto">
+                        <div class="flex justify-between items-end">
+                            <span class="text-slate-500 text-sm">Pago Único</span>
+                            <div class="text-right leading-none">
+                                <span class="text-2xl font-bold text-white tracking-tight">$1.500.000</span>
+                                <span class="text-xs font-medium text-slate-500 ml-1">COP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Web (La Cara) -->
+                <div class="glass-panel rounded-2xl p-6 border border-white/5 reveal delay-100 flex flex-col hover:border-brand-accent/30 transition duration-300">
+                    <div class="mb-6">
+                        <span class="text-xs font-bold text-slate-500 tracking-widest uppercase">Módulo Comercial</span>
+                        <h3 class="text-2xl font-bold mt-2 text-white">Web Experience</h3>
+                        <p class="text-slate-400 text-xs mt-2">Para vender más y generar confianza.</p>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8 text-sm text-slate-300 flex-1">
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> <span>Diseño UX/UI Premium</span></li>
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> <span>Navegación Intuitiva y Sin Fricción</span></li>
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> <span>Storytelling de Propiedades</span></li>
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> <span>Carga Ultra-Rápida</span></li>
+                    </ul>
+
+                    <div class="border-t border-white/10 pt-6 mt-auto">
+                        <div class="flex justify-between items-end">
+                            <span class="text-slate-500 text-sm">Pago Único</span>
+                            <div class="text-right leading-none">
+                                <span class="text-2xl font-bold text-white tracking-tight">$1.500.000</span>
+                                <span class="text-xs font-medium text-slate-500 ml-1">COP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Retainer (El Motor) - Highlighted -->
+                <div class="rounded-2xl p-1 bg-gradient-to-b from-brand-accent to-purple-600 reveal delay-200 relative group flex flex-col">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-brand-accent text-white px-3 py-0.5 rounded-full text-[10px] font-bold shadow-lg tracking-wider uppercase">
+                        Vital
+                    </div>
+                    <div class="bg-brand-surface rounded-xl p-6 h-full flex flex-col justify-between">
+                        <div>
+                            <div class="mb-6">
+                                <span class="text-xs font-bold text-blue-300 tracking-widest uppercase">Soporte Continuo</span>
+                                <h3 class="text-2xl font-bold mt-2 text-white">Mantenimiento</h3>
+                                <p class="text-blue-200/60 text-xs mt-2">Tu seguro de tranquilidad mensual.</p>
+                            </div>
+                            
+                            <ul class="space-y-4 mb-8 text-sm text-white flex-1">
+                                <li class="flex items-start gap-3">
+                                    <i data-lucide="edit-3" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> 
+                                    <span><strong>4 Horas de Ajustes al Mes</strong>: ¿Cambios en fotos o textos? Los hacemos por ti.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i data-lucide="bar-chart-2" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> 
+                                    <span><strong>Auditoría de Datos del CRM</strong>: Revisamos que tus reservas sincronicen perfecto con Cloudbeds.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i data-lucide="wifi" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> 
+                                    <span><strong>Garantía de Disponibilidad</strong>: Aseguramos que tu web siempre esté en línea.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i data-lucide="shield-check" class="text-brand-accent w-4 h-4 shrink-0 mt-0.5"></i> 
+                                    <span><strong>Seguro de Información</strong>: Si algo falla, restauramos tus datos en minutos.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="border-t border-white/10 pt-6 mt-auto">
+                            <div class="flex justify-between items-end">
+                                <span class="text-slate-400 text-sm">Mensual</span>
+                                <div class="text-right leading-none">
+                                    <span class="text-2xl font-bold text-white tracking-tight">$400.000</span>
+                                    <span class="text-xs font-medium text-slate-500 ml-1">COP/mes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bundle Note / Discount -->
+            <div class="mt-10 text-center reveal delay-300">
+                <div class="inline-block bg-gradient-to-r from-brand-accent/10 to-purple-600/10 border border-brand-accent/30 rounded-full px-8 py-4 backdrop-blur-sm relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-brand-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <p class="text-base text-white relative z-10 flex items-center justify-center gap-3 flex-wrap">
+                        <span class="text-brand-accent font-bold flex items-center gap-2"><i data-lucide="sparkles" class="w-4 h-4"></i> Beneficio por Integración Total:</span> 
+                        Consolida el proyecto (CRM + Web) y aprovecha un <span class="font-bold text-black bg-white px-2 py-0.5 rounded text-sm shadow-lg shadow-white/20">15% OFF</span> en la inversión inicial.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. CTA Final -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-brand-accent/5"></div>
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10 reveal">
+            <h2 class="text-3xl md:text-5xl font-bold mb-8">Nos encantaría construir esto contigo.</h2>
+            
+            <p class="text-slate-400 mb-10 text-xl">
+                Sería un honor para nosotros ser el equipo que te acompañe en esta nueva etapa.
+            </p>
+            
+            <div class="inline-block px-10 py-5 bg-white text-brand-dark rounded-full font-bold text-lg shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
+                Empecemos a Trabajar Juntos
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 bg-black py-12 text-center text-slate-600 text-sm">
+        <p>&copy; 2026 Estudio de Producto Digital. Todos los derechos reservados.</p>
+        <p class="mt-2">Creado exclusivamente para OPE Suites.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Scroll Reveal Animation Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                const elementVisible = 100;
+
+                reveals.forEach((reveal) => {
+                    const elementTop = reveal.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveal.classList.add('active');
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', revealOnScroll);
+            // Trigger once on load
+            revealOnScroll();
+        });
+    </script>
+</body>
+</html>
