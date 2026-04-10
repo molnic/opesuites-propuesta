@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partner de Producto · OPE Suites × Molu Studio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,300&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Space Grotesk"', 'sans-serif'],
+            body:    ['Inter', 'sans-serif'],
+            serif:   ['Fraunces', 'serif'],
+          },
+          colors: {
+            ink:    '#060810',
+            accent: '#6366F1',
+            gold:   '#E8C27A',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background:#060810; color:#F1F5F9; font-family:'Inter',sans-serif; overflow-x:hidden; }
+
+    /* ── Mesh background ─────────── */
+    .mesh-bg {
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background:
+        radial-gradient(ellipse 70% 50% at 15%  5%, rgba(99,102,241,.12) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 40% at 85% 85%, rgba(232,194,122,.08) 0%, transparent 55%);
+    }
+    body::before {
+      content:''; position:fixed; inset:0; z-index:1; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity:.025;
+    }
+
+    /* ── Glass ───────────────────── */
+    .glass        { background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,rgba(255,255,255,.01) 100%); border:1px solid rgba(255,255,255,.06); backdrop-filter:blur(12px); }
+    .glass-strong { background:linear-gradient(135deg,rgba(99,102,241,.08) 0%,rgba(255,255,255,.02) 100%); border:1px solid rgba(99,102,241,.15); backdrop-filter:blur(20px); }
+    .glass-gold   { background:linear-gradient(135deg,rgba(232,194,122,.07) 0%,rgba(255,255,255,.01) 100%); border:1px solid rgba(232,194,122,.14); backdrop-filter:blur(12px); }
+
+    /* ── Text gradients ──────────── */
+    .tgw { background:linear-gradient(180deg,#fff 0%,#94a3b8 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .tgp { background:linear-gradient(135deg,#a5b4fc,#818cf8);       -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .tgg { background:linear-gradient(135deg,#e8c27a,#f0d9a8);       -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+    /* ── Serif italic ────────────── */
+    .sa { font-family:'Fraunces',serif; font-style:italic; font-weight:300; }
+
+    /* ── Section label ───────────── */
+    .lbl { font-size:10px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:#6366F1; }
+
+    /* ── Divider ─────────────────── */
+    .dv { height:1px; background:linear-gradient(90deg,transparent,rgba(99,102,241,.3),transparent); }
+
+    /* ── Reveal ──────────────────── */
+    .rv { opacity:0; transform:translateY(22px); transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+    .rv.on { opacity:1; transform:translateY(0); }
+    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
+    .d4{transition-delay:.4s} .d5{transition-delay:.5s} .d6{transition-delay:.6s}
+
+    /* ── Hover cards ─────────────── */
+    .hc { transition:all .3s cubic-bezier(.16,1,.3,1); }
+    .hc:hover { transform:translateY(-4px); border-color:rgba(99,102,241,.25)!important; }
+
+    /* ── Service card hover ──────── */
+    .sc { transition:all .3s cubic-bezier(.16,1,.3,1); cursor:default; }
+    .sc:hover { transform:translateY(-3px); background:linear-gradient(135deg,rgba(99,102,241,.09) 0%,rgba(255,255,255,.025) 100%); border-color:rgba(99,102,241,.2)!important; }
+
+    /* ── Pulse dot ───────────────── */
+    .pdot { width:8px; height:8px; border-radius:50%; background:#10B981; box-shadow:0 0 0 0 rgba(16,185,129,.4); animation:pr 2s infinite; }
+    @keyframes pr { 0%{box-shadow:0 0 0 0 rgba(16,185,129,.4)} 70%{box-shadow:0 0 0 8px rgba(16,185,129,0)} 100%{box-shadow:0 0 0 0 rgba(16,185,129,0)} }
+
+    /* ── Step badge ──────────────── */
+    .sb { width:26px; height:26px; border-radius:6px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(99,102,241,.15); border:1px solid rgba(99,102,241,.25); font-size:11px; font-weight:700; color:#a5b4fc; font-family:'Space Grotesk',sans-serif; }
+
+    /* ── Scroll progress ─────────── */
+    #sp { position:fixed; top:0; left:0; height:2px; z-index:1000; background:linear-gradient(90deg,#6366F1,#E8C27A); transition:width .1s linear; }
+
+    /* ── Chip ────────────────────── */
+    .chip-g { font-size:10px; font-weight:700; padding:2px 8px; border-radius:999px; background:rgba(232,194,122,.12); border:1px solid rgba(232,194,122,.22); color:#F0D9A8; }
+    .chip-p { font-size:10px; font-weight:700; padding:2px 8px; border-radius:999px; background:rgba(99,102,241,.12); border:1px solid rgba(99,102,241,.22); color:#a5b4fc; }
+
+    /* ── Progress bar fill ───────── */
+    .bar-fill { animation:fill 1.8s 1s cubic-bezier(.16,1,.3,1) both; }
+    @keyframes fill { from{width:0%} }
+
+    /* ── Marquee ─────────────────── */
+    @keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .mq-track { animation:mq 28s linear infinite; display:flex; gap:2rem; white-space:nowrap; }
+
+    /* ── Mockup browser frame ────── */
+    .browser { border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08); background:#0D1117; }
+    .browser-bar { background:#111827; padding:8px 12px; display:flex; align-items:center; gap:6px; }
+    .browser-dot { width:8px; height:8px; border-radius:50%; }
+
+    /* ── Scenario timeline ───────── */
+    .timeline-line { position:absolute; left:19px; top:40px; bottom:0; width:1px; background:linear-gradient(to bottom, rgba(99,102,241,.3), transparent); }
+  </style>
+</head>
+<body>
+
+<div id="sp" style="width:0%"></div>
+<div class="mesh-bg"></div>
+
+<!-- ═══════════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════════ -->
+<nav class="fixed top-0 w-full z-50 glass border-b border-white/[.05] px-6 py-4">
+  <div class="max-w-6xl mx-auto flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <span class="text-sm font-display font-semibold text-white/90">Molu Studio</span>
+      <span class="text-white/20">×</span>
+      <span class="text-sm font-medium text-white/55">OPE Suites</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8 text-xs font-medium text-white/45">
+      <a href="#que-recibes"  class="hover:text-white transition-colors">¿Qué recibes?</a>
+      <a href="#servicios"    class="hover:text-white transition-colors">Servicios</a>
+      <a href="#scope"        class="hover:text-white transition-colors">Alcance</a>
+      <a href="#inversion"    class="hover:text-white transition-colors">Inversión</a>
+    </div>
+    <a href="#inversion" class="text-xs font-semibold px-4 py-2 rounded-full bg-accent/20 border border-accent/30 text-indigo-300 hover:bg-accent/30 transition-all">
+      Ver inversión
+    </a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════
+     HERO  ─  2-column glassmorphism layout
+═══════════════════════════════════════════════ -->
+<section class="relative min-h-dvh flex items-center px-6 pt-28 pb-16 lg:pt-24 lg:pb-20">
+
+  <!-- Subtle background glow (no circles) -->
+  <div class="absolute inset-0 z-0 pointer-events-none"
+    style="background:radial-gradient(ellipse 60% 55% at 30% 45%,rgba(99,102,241,.10) 0%,transparent 60%)"></div>
+
+  <div class="max-w-6xl mx-auto w-full relative z-10">
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+
+      <!-- LEFT: headline + CTAs -->
+      <div class="lg:col-span-7 pt-0 lg:pt-6 flex flex-col gap-6 lg:gap-8">
+
+        <!-- Badge -->
+        <div class="rv animate-fade-in inline-flex items-center gap-2 w-fit px-4 py-2 rounded-full glass-strong text-xs font-semibold">
+          <div class="pdot"></div>
+          <span class="text-emerald-400">Propuesta activa</span>
+          <span class="text-white/25 mx-1">·</span>
+          <span class="text-white/55">Retainer Mensual — OPE Suites</span>
+        </div>
+
+        <!-- Headline -->
+        <div class="rv d1">
+          <h1 class="font-display font-bold leading-[.92] tracking-tight">
+            <span class="tgw block" style="font-size:clamp(2.8rem,7vw,5rem)">Tu equipo de</span>
+            <span class="sa tgg block" style="font-size:clamp(3.8rem,10vw,7rem)">producto.</span>
+            <span class="tgw block" style="font-size:clamp(2.2rem,5.5vw,3.8rem)">Sin la nómina.</span>
+          </h1>
+        </div>
+
+        <!-- Description -->
+        <p class="rv d2 text-lg text-white/45 max-w-xl leading-relaxed">
+          Un partnership mensual donde Molu Studio actúa como tu equipo de producto externo:
+          mantiene el sistema, lee los datos y te dice qué hacer con ellos.
+        </p>
+
+        <!-- CTAs -->
+        <div class="rv d3 flex flex-col sm:flex-row gap-4">
+          <a href="#que-recibes" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-accent text-white font-semibold text-sm hover:bg-indigo-500 transition-all shadow-xl shadow-accent/25">
+            ¿Qué recibes exactamente?
+            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+          </a>
+          <a href="#inversion" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full glass border border-white/10 text-white/65 font-medium text-sm hover:text-white hover:border-white/20 transition-all">
+            Ver inversión →
+          </a>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: value props + product marquee -->
+      <div class="lg:col-span-5 lg:mt-10 flex flex-col gap-3 lg:gap-4">
+
+        <!-- Value props card -->
+        <div class="rv d2 glass-strong rounded-3xl p-6 relative overflow-hidden" style="overflow:hidden">
+          <div class="absolute top-0 right-0 -mr-16 -mt-16 w-48 h-48 rounded-full bg-accent/8 blur-3xl pointer-events-none"></div>
+
+          <!-- Card header -->
+          <div class="flex items-center gap-2 mb-6">
+            <div class="pdot"></div>
+            <span class="text-xs font-semibold text-emerald-400 tracking-wide">Activo todos los meses</span>
+          </div>
+
+          <!-- 4 value props -->
+          <div class="flex flex-col gap-0 relative">
+
+            <!-- Item 1 -->
+            <div class="flex items-start gap-4 py-4 border-b border-white/[.06]">
+              <div class="w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i data-lucide="bar-chart-2" class="w-5 h-5 text-indigo-400"></i>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-white font-display leading-snug">Un reporte cada mañana</div>
+                <div class="text-xs text-white/40 mt-0.5 leading-relaxed">Sabes cómo están tus reservas y métricas antes de empezar el día.</div>
+              </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="flex items-start gap-4 py-4 border-b border-white/[.06]">
+              <div class="w-10 h-10 rounded-xl bg-yellow-500/15 border border-yellow-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i data-lucide="bell-ring" class="w-5 h-5 text-yellow-400"></i>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-white font-display leading-snug">Alertas antes de que lo notes</div>
+                <div class="text-xs text-white/40 mt-0.5 leading-relaxed">Si algo falla, te avisamos primero. Tu huésped nunca se entera.</div>
+              </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="flex items-start gap-4 py-4 border-b border-white/[.06]">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i data-lucide="target" class="w-5 h-5 text-emerald-400"></i>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-white font-display leading-snug">Sesión estratégica mensual</div>
+                <div class="text-xs text-white/40 mt-0.5 leading-relaxed">Una reunión donde decidimos juntos qué mejorar y por qué.</div>
+              </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="flex items-start gap-4 pt-4">
+              <div class="w-10 h-10 rounded-xl bg-rose-500/15 border border-rose-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i data-lucide="trending-up" class="w-5 h-5 text-rose-400"></i>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-white font-display leading-snug">Acciones, no solo datos</div>
+                <div class="text-xs text-white/40 mt-0.5 leading-relaxed">No te mandamos gráficas. Te decimos exactamente qué hacer para generar más reservas.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Products marquee card -->
+        <div class="rv d3 glass rounded-3xl overflow-hidden py-6">
+          <p class="px-6 text-xs text-white/35 font-medium mb-5">Productos bajo este retainer</p>
+          <div class="relative overflow-hidden"
+            style="mask-image:linear-gradient(to right,transparent,black 15%,black 85%,transparent);-webkit-mask-image:linear-gradient(to right,transparent,black 15%,black 85%,transparent)">
+            <div class="mq-track">
+              <!-- repeated for seamless loop -->
+              <div class="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                <i data-lucide="layout-dashboard" class="w-5 h-5 text-indigo-400 flex-shrink-0"></i>
+                <span class="text-sm font-bold font-display text-white">CRM</span>
+              </div>
+              <div class="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                <i data-lucide="calendar-range" class="w-5 h-5 text-yellow-400 flex-shrink-0"></i>
+                <span class="text-sm font-bold font-display text-white">Plataforma de Reservas</span>
+              </div>
+              <div class="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                <i data-lucide="globe" class="w-5 h-5 text-emerald-400 flex-shrink-0"></i>
+                <span class="text-sm font-bold font-display text-white">Landing Page</span>
+              </div>
+              <div class="text-white/20 font-display font-bold text-sm">·</div>
+              <!-- duplicate for loop -->
+              <div class="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                <i data-lucide="layout-dashboard" class="w-5 h-5 text-indigo-400 flex-shrink-0"></i>
+                <span class="text-sm font-bold font-display text-white">CRM</span>
+              </div>
+              <div class="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                <i data-lucide="calendar-range" class="w-5 h-5 text-yellow-400 flex-shrink-0"></i>
+                <span class="text-sm font-bold font-display text-white">Plataforma de Reservas</span>
+              </div>
+              <div class="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                <i data-lucide="globe" class="w-5 h-5 text-emerald-400 flex-shrink-0"></i>
+                <span class="text-sm font-bold font-display text-white">Landing Page</span>
+              </div>
+              <div class="text-white/20 font-display font-bold text-sm">·</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="dv max-w-6xl mx-auto px-6"></div>
+
+<!-- ═══════════════════════════════════════════════
+     TUS PRODUCTOS ACTUALES  ─  mockups
+═══════════════════════════════════════════════ -->
+<section class="relative z-10 py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="text-center mb-14">
+      <div class="lbl rv mb-4">Lo que ya existe</div>
+      <h2 class="rv d1 font-display font-bold tgw leading-tight" style="font-size:clamp(1.8rem,4vw,2.8rem)">
+        Tres productos construidos.<br>
+        <span class="sa tgg" style="font-size:1.1em">Listos para crecer.</span>
+      </h2>
+      <p class="rv d2 text-white/40 text-sm mt-4 max-w-md mx-auto">Este retainer cubre los tres. Sin costo adicional por cada uno.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-5">
+
+      <!-- CRM mockup -->
+      <div class="rv hc">
+        <div class="lbl mb-3 flex items-center gap-2">
+          <i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-indigo-400"></i>
+          CRM — Gestión de Reservas
+        </div>
+        <div class="browser">
+          <div class="browser-bar">
+            <div class="browser-dot bg-red-500/60"></div>
+            <div class="browser-dot bg-yellow-500/60"></div>
+            <div class="browser-dot bg-emerald-500/60"></div>
+            <div class="ml-3 text-xs text-white/25 truncate">app.opesuites.com/crm</div>
+          </div>
+          <img src="assets/mockup-crm.png" alt="CRM OPE Suites" style="width:100%; display:block; object-fit:cover; object-position:top;">
+        </div>
+      </div>
+
+      <!-- Booking platform mockup -->
+      <div class="rv d1 hc">
+        <div class="lbl mb-3 flex items-center gap-2">
+          <i data-lucide="calendar-range" class="w-3.5 h-3.5 text-yellow-400"></i>
+          Plataforma de Reservas
+        </div>
+        <div class="browser">
+          <div class="browser-bar">
+            <div class="browser-dot bg-red-500/60"></div>
+            <div class="browser-dot bg-yellow-500/60"></div>
+            <div class="browser-dot bg-emerald-500/60"></div>
+            <div class="ml-3 text-xs text-white/25 truncate">reservas.opesuites.com</div>
+          </div>
+          <img src="assets/mockup-reservas.png" alt="Plataforma de Reservas OPE Suites" style="width:100%; display:block; object-fit:cover; object-position:top;">
+        </div>
+      </div>
+
+      <!-- Landing page mockup -->
+      <div class="rv d2 hc">
+        <div class="lbl mb-3 flex items-center gap-2">
+          <i data-lucide="globe" class="w-3.5 h-3.5 text-emerald-400"></i>
+          Landing Page
+        </div>
+        <div class="browser">
+          <div class="browser-bar">
+            <div class="browser-dot bg-red-500/60"></div>
+            <div class="browser-dot bg-yellow-500/60"></div>
+            <div class="browser-dot bg-emerald-500/60"></div>
+            <div class="ml-3 text-xs text-white/25 truncate">opesuites.com</div>
+          </div>
+          <img src="assets/mockup-website.png" alt="Landing Page OPE Suites" style="width:100%; display:block; object-fit:cover; object-position:top;">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="dv max-w-6xl mx-auto px-6"></div>
+
+<!-- ═══════════════════════════════════════════════
+     ¿QUÉ RECIBES EXACTAMENTE?  ─  día a día
+═══════════════════════════════════════════════ -->
+<section id="que-recibes" class="relative z-10 py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="text-center mb-14">
+      <div class="lbl rv mb-4">La experiencia real</div>
+      <h2 class="rv d1 font-display font-bold tgw leading-tight" style="font-size:clamp(1.8rem,4vw,2.8rem)">
+        ¿Qué recibes<br>
+        <span class="sa tgg" style="font-size:1.1em">exactamente?</span>
+      </h2>
+      <p class="rv d2 text-white/40 text-sm mt-4 max-w-lg mx-auto">Así se siente tener a Molu Studio como tu equipo de producto. Concreto, sin tecnicismos.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-5">
+
+      <!-- Scenario 1: daily report -->
+      <div class="rv glass-gold rounded-2xl p-7 hc relative overflow-hidden">
+        <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-yellow-500/8 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="flex items-start gap-4 relative">
+          <div class="w-12 h-12 rounded-2xl bg-yellow-500/15 border border-yellow-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide="sunrise" class="w-6 h-6 text-yellow-400"></i>
+          </div>
+          <div>
+            <div class="text-xs text-yellow-400/70 font-semibold uppercase tracking-widest mb-2">Cada mañana</div>
+            <h3 class="font-display font-bold text-white text-lg mb-3">Buenos días, OPE Suites.</h3>
+            <p class="text-sm text-white/50 leading-relaxed mb-4">
+              Antes de que empiece el día, llega un reporte automático generado por IA con todo lo que pasó ayer: cuántas reservas entraron, ingresos del día, suites ocupadas, y si hay algo que atender.
+            </p>
+            <!-- Sample report mockup -->
+            <div class="glass rounded-xl p-4 text-xs space-y-2">
+              <div class="text-white/30 font-medium">📊 Resumen · Miércoles 9 de abril</div>
+              <div class="flex justify-between text-white/60"><span>Reservas nuevas</span><span class="font-semibold text-emerald-400">+3</span></div>
+              <div class="flex justify-between text-white/60"><span>Ocupación actual</span><span class="font-semibold text-white">75%</span></div>
+              <div class="flex justify-between text-white/60"><span>Checkout pendiente</span><span class="font-semibold text-yellow-400">Suite 02 — hoy</span></div>
+              <div class="text-white/35 pt-1 border-t border-white/10">💡 Suite 01 recibe 40% más visitas esta semana. Considera actualizar las fotos.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scenario 2: 3am alert -->
+      <div class="rv d1 glass rounded-2xl p-7 hc relative overflow-hidden">
+        <div class="absolute -top-8 -right-8 w-32 h-32 bg-red-500/6 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="flex items-start gap-4 relative">
+          <div class="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide="shield-alert" class="w-6 h-6 text-red-400"></i>
+          </div>
+          <div>
+            <div class="text-xs text-red-400/70 font-semibold uppercase tracking-widest mb-2">3:17 AM — un martes cualquiera</div>
+            <h3 class="font-display font-bold text-white text-lg mb-3">Algo falla. Tú sigues durmiendo.</h3>
+            <p class="text-sm text-white/50 leading-relaxed mb-4">
+              El sistema detecta que la plataforma de reservas tiene un error de respuesta. Nosotros recibimos la alerta, lo diagnosticamos y lo resolvemos. Cuando despiertas, todo está en orden.
+            </p>
+            <!-- Alert mockup -->
+            <div class="glass rounded-xl p-4 text-xs space-y-2">
+              <div class="flex items-center gap-2 text-red-400/80 font-semibold">
+                <div class="w-2 h-2 rounded-full bg-red-400 animate-pulse"></div>
+                Alerta detectada · 3:17 AM
+              </div>
+              <div class="text-white/50">Plataforma de reservas sin respuesta (timeout 5s)</div>
+              <div class="text-white/35">→ Diagnóstico iniciado automáticamente</div>
+              <div class="flex items-center gap-2 text-emerald-400/80 font-semibold mt-1 pt-2 border-t border-white/10">
+                <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+                Resuelto · 3:34 AM — sin intervención tuya
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scenario 3: monthly session -->
+      <div class="rv glass-strong rounded-2xl p-7 hc relative overflow-hidden">
+        <div class="flex items-start gap-4 relative">
+          <div class="w-12 h-12 rounded-2xl bg-accent/20 border border-accent/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide="calendar-check" class="w-6 h-6 text-indigo-300"></i>
+          </div>
+          <div>
+            <div class="text-xs text-indigo-400/70 font-semibold uppercase tracking-widest mb-2">Último miércoles del mes</div>
+            <h3 class="font-display font-bold text-white text-lg mb-3">Tu sesión de estrategia.</h3>
+            <p class="text-sm text-white/50 leading-relaxed mb-4">
+              Nos sentamos contigo (o hacemos una videollamada), revisamos los números del mes y decidimos juntos qué mejorar el siguiente. Sales con una hoja de ruta clara.
+            </p>
+            <div class="glass rounded-xl p-4 text-xs space-y-2">
+              <div class="text-white/30 font-medium">📋 Agenda · Sesión de abril</div>
+              <div class="flex items-center gap-2 text-white/55"><div class="w-1 h-1 rounded-full bg-white/30"></div>Revisión métricas GA4 de marzo</div>
+              <div class="flex items-center gap-2 text-white/55"><div class="w-1 h-1 rounded-full bg-white/30"></div>Análisis de conversión plataforma</div>
+              <div class="flex items-center gap-2 text-white/55"><div class="w-1 h-1 rounded-full bg-white/30"></div>Priorizar 3 mejoras para mayo</div>
+              <div class="flex items-center gap-2 text-emerald-400/70"><div class="w-1 h-1 rounded-full bg-emerald-400"></div>Definir objetivo del mes → +20% reservas directas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scenario 4: analytics -->
+      <div class="rv d1 glass rounded-2xl p-7 hc relative overflow-hidden">
+        <div class="flex items-start gap-4 relative">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide="trending-up" class="w-6 h-6 text-emerald-400"></i>
+          </div>
+          <div>
+            <div class="text-xs text-emerald-400/70 font-semibold uppercase tracking-widest mb-2">Cada que lo necesites</div>
+            <h3 class="font-display font-bold text-white text-lg mb-3">Tus datos, en lenguaje humano.</h3>
+            <p class="text-sm text-white/50 leading-relaxed mb-4">
+              No te mandamos un PDF de 30 páginas. Te explicamos qué significa lo que pasó y qué deberías hacer al respecto. Datos convertidos en decisiones.
+            </p>
+            <div class="glass rounded-xl p-4 text-xs space-y-2.5">
+              <div class="flex justify-between items-center">
+                <span class="text-white/45">Fuente #1 de reservas</span>
+                <span class="font-bold text-white">Directo (62%)</span>
+              </div>
+              <div class="h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
+                <div class="h-full w-[62%] rounded-full bg-emerald-400"></div>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-white/45">Suite más visitada</span>
+                <span class="font-bold text-white">Suite Ejecutiva</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-white/45">Conversión del mes</span>
+                <span class="font-bold text-emerald-400">+4.2% vs anterior</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="dv max-w-6xl mx-auto px-6"></div>
+
+<!-- ═══════════════════════════════════════════════
+     8 SERVICIOS
+═══════════════════════════════════════════════ -->
+<section id="servicios" class="relative z-10 py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="text-center mb-14">
+      <div class="lbl rv mb-4">Cobertura mensual</div>
+      <h2 class="rv d1 font-display font-bold tgw leading-tight" style="font-size:clamp(1.8rem,4vw,2.8rem)">
+        Lo que incluye<br>
+        <span class="sa tgg" style="font-size:1.1em">cada mes.</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+
+      <div class="rv glass rounded-2xl p-6 sc">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-accent/15 border border-accent/20 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="wrench" class="w-5 h-5 text-indigo-400"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-2"><div class="sb">01</div><h3 class="font-display font-semibold text-white text-sm">Tus ideas, implementadas</h3></div>
+            <p class="text-sm text-white/45 leading-relaxed">Cambios de contenido, ajustes de lógica, optimizaciones menores en los tres productos. Lo que quieras mejorar, lo hacemos en días.</p>
+            <div class="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[.04] border border-white/[.07] text-xs text-white/40">
+              <i data-lucide="clock" class="w-3 h-3 text-white/30"></i>
+              Hasta <strong class="text-white/65 mx-1">4 horas de ajustes</strong> incluidas al mes · Lo adicional se cotiza aparte
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv d1 glass-strong rounded-2xl p-6 sc relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-28 h-28 bg-accent/8 rounded-full blur-2xl pointer-events-none -translate-y-6 translate-x-6"></div>
+        <div class="flex items-start gap-4 relative">
+          <div class="w-10 h-10 rounded-xl bg-yellow-500/15 border border-yellow-500/25 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="bot" class="w-5 h-5 text-yellow-400"></i>
+          </div>
+          <div>
+            <div class="flex items-center flex-wrap gap-2 mb-2"><div class="sb">02</div><h3 class="font-display font-semibold text-white text-sm">Buenos días, OPE</h3><span class="chip-g">Exclusivo</span></div>
+            <p class="text-sm text-white/45 leading-relaxed">Cada mañana un reporte automático con IA: ocupación, ingresos, reservas por vencer y oportunidades. Antes de que empiece el día.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv glass-gold rounded-2xl p-6 sc relative overflow-hidden">
+        <div class="flex items-start gap-4 relative">
+          <div class="w-10 h-10 rounded-xl bg-yellow-500/15 border border-yellow-500/20 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="trending-up" class="w-5 h-5 text-yellow-400"></i>
+          </div>
+          <div>
+            <div class="flex items-center flex-wrap gap-2 mb-2"><div class="sb">03</div><h3 class="font-display font-semibold text-white text-sm">Conoce a tus huéspedes</h3><span class="chip-g">Exclusivo</span></div>
+            <p class="text-sm text-white/45 leading-relaxed">Métricas reales: qué suites gustan más, de dónde vienen las reservas, por qué se pierden conversiones. Datos de GA4 + plataforma explicados en lenguaje de negocio.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv d1 glass rounded-2xl p-6 sc">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="bell-ring" class="w-5 h-5 text-red-400"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-2"><div class="sb">04</div><h3 class="font-display font-semibold text-white text-sm">Duerme tranquila</h3></div>
+            <p class="text-sm text-white/45 leading-relaxed">Si algo falla a las 3AM, lo sabemos antes que tú. Monitoreo 24/7, alertas automáticas y resolución sin que tengas que hacer nada.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv glass rounded-2xl p-6 sc">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-slate-500/10 border border-slate-500/20 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="shield-check" class="w-5 h-5 text-slate-400"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-2"><div class="sb">05</div><h3 class="font-display font-semibold text-white text-sm">Tu sistema, siempre sano</h3></div>
+            <p class="text-sm text-white/45 leading-relaxed">Actualizaciones de seguridad, dependencias y compatibilidad técnica. Incluido, sin tener que pedirlo.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv d1 glass rounded-2xl p-6 sc">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="users" class="w-5 h-5 text-blue-400"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-2"><div class="sb">06</div><h3 class="font-display font-semibold text-white text-sm">Tu equipo, bajo control</h3></div>
+            <p class="text-sm text-white/45 leading-relaxed">Agregar, quitar o cambiar permisos en los tres sistemas. Sin llamarle a nadie ni esperar días.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv glass rounded-2xl p-6 sc">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="database" class="w-5 h-5 text-purple-400"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-2"><div class="sb">07</div><h3 class="font-display font-semibold text-white text-sm">Si algo se rompe, lo recuperamos</h3></div>
+            <p class="text-sm text-white/45 leading-relaxed">Test mensual de restauración de datos. Si algún día hay un problema grave, tienes respaldo garantizado.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv d1 glass-strong rounded-2xl p-6 sc relative overflow-hidden border border-accent/20">
+        <div class="absolute inset-0 bg-gradient-to-br from-accent/[.06] to-transparent pointer-events-none"></div>
+        <div class="flex items-start gap-4 relative">
+          <div class="w-10 h-10 rounded-xl bg-accent/20 border border-accent/30 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="target" class="w-5 h-5 text-indigo-300"></i>
+          </div>
+          <div>
+            <div class="flex items-center flex-wrap gap-2 mb-2"><div class="sb">08</div><h3 class="font-display font-semibold text-white text-sm">Un mes mira atrás, el siguiente va adelante</h3><span class="chip-p">Estrategia</span></div>
+            <p class="text-sm text-white/45 leading-relaxed">Sesión mensual donde revisamos qué funcionó, priorizamos qué mejorar y definimos los objetivos del siguiente ciclo. Con hoja de ruta incluida.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="dv max-w-6xl mx-auto px-6"></div>
+
+<!-- ═══════════════════════════════════════════════
+     ALCANCE  ─  incluido vs. cotización aparte
+═══════════════════════════════════════════════ -->
+<section id="scope" class="relative z-10 py-24 px-6">
+  <div class="max-w-4xl mx-auto">
+
+    <div class="text-center mb-14">
+      <div class="lbl rv mb-4">Claridad ante todo</div>
+      <h2 class="rv d1 font-display font-bold tgw leading-tight" style="font-size:clamp(1.8rem,4vw,2.8rem)">
+        ¿Qué incluye el retainer<br>
+        <span class="sa tgg" style="font-size:1.1em">y qué no?</span>
+      </h2>
+      <p class="rv d2 text-white/40 text-sm mt-4 max-w-xl mx-auto">Este fee cubre la operación y el crecimiento de los productos que ya existen. Los proyectos nuevos se presupuestan aparte, sin compromisos.</p>
+    </div>
+
+    <div class="rv grid md:grid-cols-2 gap-5">
+
+      <!-- Incluido -->
+      <div class="glass-strong rounded-2xl p-7 border border-emerald-500/15">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+          </div>
+          <h3 class="font-display font-bold text-white">Incluido en el retainer</h3>
+        </div>
+        <ul class="space-y-3">
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/65">Ajustes de contenido: textos, fotos, precios, disponibilidad</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/65">Corrección de errores en los 3 productos</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/65">Actualizaciones de seguridad y dependencias</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/65">Mejoras menores de UI y experiencia de usuario</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/65">Analytics, reportes diarios y métricas de negocio</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/65">Monitoreo 24/7 y alertas automáticas</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/65">Gestión de accesos y roles del equipo</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/65">Backups y verificación mensual de disponibilidad de datos</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/65">Sesión mensual de estrategia + hoja de ruta</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/65">Infraestructura administrada (Vercel, Supabase, dominio)</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- No incluido -->
+      <div class="glass rounded-2xl p-7 border border-white/[.05]">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-8 h-8 rounded-xl bg-white/8 border border-white/10 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="package-plus" class="w-4 h-4 text-white/50"></i>
+          </div>
+          <h3 class="font-display font-bold text-white">Se presupuesta por separado</h3>
+        </div>
+        <p class="text-xs text-white/35 mb-5 leading-relaxed">Estos ítems están fuera del scope del retainer pero los podemos desarrollar sin problema — con propuesta y precio aparte.</p>
+        <ul class="space-y-3">
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-white/30 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/50">Nuevas plataformas o productos digitales desde cero</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-white/30 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/50">Funcionalidades mayores con más de 8 horas de desarrollo</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-white/30 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/50">Nuevas integraciones con terceros desde cero</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-white/30 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/50">Rediseños completos de interfaz o identidad visual</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-white/30 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/50">Migraciones de base de datos o cambios de arquitectura</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <i data-lucide="arrow-right" class="w-4 h-4 text-white/30 flex-shrink-0 mt-0.5"></i>
+            <span class="text-white/50">Campañas de marketing o pauta publicitaria</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="dv max-w-6xl mx-auto px-6"></div>
+
+<!-- ═══════════════════════════════════════════════
+     METODOLOGÍA
+═══════════════════════════════════════════════ -->
+<section class="relative z-10 py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="text-center mb-14">
+      <div class="lbl rv mb-4">Metodología</div>
+      <h2 class="rv d1 font-display font-bold tgw leading-tight" style="font-size:clamp(1.8rem,4vw,2.8rem)">
+        El ritmo de trabajo<br>
+        <span class="sa tgg" style="font-size:1.1em">mes a mes.</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="rv glass rounded-2xl p-7 hc relative overflow-hidden">
+        <div class="absolute top-3 right-4 text-7xl font-bold font-display text-white/[.025] leading-none select-none">D</div>
+        <div class="w-10 h-10 rounded-xl bg-accent/15 border border-accent/20 flex items-center justify-center mb-5">
+          <i data-lucide="sunrise" class="w-5 h-5 text-indigo-400"></i>
+        </div>
+        <div class="text-xs text-white/25 uppercase tracking-widest mb-2 font-semibold">Diario</div>
+        <h3 class="font-display font-semibold text-white mb-3">Inteligencia automática</h3>
+        <p class="text-sm text-white/45 leading-relaxed">Monitoreo continuo, alertas y reporte matutino con IA. Sin intervención manual — los datos llegan a ti cada mañana.</p>
+      </div>
+
+      <div class="rv d1 glass rounded-2xl p-7 hc relative overflow-hidden">
+        <div class="absolute top-3 right-4 text-7xl font-bold font-display text-white/[.025] leading-none select-none">S</div>
+        <div class="w-10 h-10 rounded-xl bg-yellow-500/15 border border-yellow-500/20 flex items-center justify-center mb-5">
+          <i data-lucide="git-commit" class="w-5 h-5 text-yellow-400"></i>
+        </div>
+        <div class="text-xs text-white/25 uppercase tracking-widest mb-2 font-semibold">Semanal</div>
+        <h3 class="font-display font-semibold text-white mb-3">Mejoras en producción</h3>
+        <p class="text-sm text-white/45 leading-relaxed">Implementamos ajustes, correcciones y mejoras de forma continua. Cada semana el sistema está un poco mejor.</p>
+      </div>
+
+      <div class="rv d2 glass rounded-2xl p-7 hc relative overflow-hidden">
+        <div class="absolute top-3 right-4 text-7xl font-bold font-display text-white/[.025] leading-none select-none">M</div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-5">
+          <i data-lucide="target" class="w-5 h-5 text-emerald-400"></i>
+        </div>
+        <div class="text-xs text-white/25 uppercase tracking-widest mb-2 font-semibold">Mensual</div>
+        <h3 class="font-display font-semibold text-white mb-3">Sesión de estrategia</h3>
+        <p class="text-sm text-white/45 leading-relaxed">Revisamos KPIs del mes, priorizamos el backlog y definimos la hoja de ruta del siguiente ciclo.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="dv max-w-6xl mx-auto px-6"></div>
+
+<!-- ═══════════════════════════════════════════════
+     INVERSIÓN
+═══════════════════════════════════════════════ -->
+<section id="inversion" class="relative z-10 py-24 px-6">
+  <div class="max-w-3xl mx-auto">
+
+    <div class="text-center mb-12">
+      <div class="lbl rv mb-4">Inversión mensual</div>
+      <h2 class="rv d1 font-display font-bold tgw leading-tight" style="font-size:clamp(1.8rem,4vw,2.8rem)">
+        Un equipo de producto externo<br>
+        <span class="sa tgg" style="font-size:1.1em">al costo que tiene sentido.</span>
+      </h2>
+      <p class="rv d2 text-white/35 text-sm mt-4 leading-relaxed">
+        Un fee fijo, sin sorpresas. Todo lo que necesitas para que tus tres productos operen y crezcan mes a mes.
+      </p>
+    </div>
+
+    <div class="rv glass-strong rounded-3xl overflow-hidden border border-accent/20">
+
+      <div class="relative p-8 pb-6 border-b border-white/10">
+        <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent pointer-events-none"></div>
+        <div class="relative flex justify-between items-start gap-4 flex-wrap">
+          <div>
+            <div class="lbl mb-2">Retainer Mensual</div>
+            <h3 class="font-display text-xl font-bold text-white">Partner de Producto Digital</h3>
+            <p class="text-white/40 text-sm mt-1">OPE Suites × Molu Studio</p>
+          </div>
+          <div class="px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 text-xs font-semibold self-start">
+            Activo desde el mes 1
+          </div>
+        </div>
+      </div>
+
+      <div class="p-8">
+        <div class="space-y-4 mb-8">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="text-sm font-medium text-white">Retainer de servicio</div>
+              <div class="text-xs text-white/35 mt-0.5">Operación, analytics, estrategia y mejoras continuas de los 3 productos</div>
+            </div>
+            <div class="text-sm font-semibold text-white font-display tabular-nums">$1.100.000</div>
+          </div>
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="text-sm font-medium text-white">Infraestructura administrada</div>
+              <div class="text-xs text-white/35 mt-0.5">Vercel Pro, Supabase, Mapbox, dominio</div>
+            </div>
+            <div class="text-sm font-semibold text-white font-display tabular-nums">$100.000</div>
+          </div>
+        </div>
+
+        <div class="border-t border-white/10 pt-6">
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="text-base font-bold font-display text-white">Total mensual</div>
+              <div class="text-xs text-white/35 mt-1 font-medium" style="font-style:italic">Si dejamos de generarte valor, no firmas otro mes.</div>
+            </div>
+            <div class="text-right">
+              <div class="font-bold font-display tgp tabular-nums" style="font-size:2.4rem;line-height:1">$1.200.000</div>
+              <div class="text-xs text-white/35 mt-1">COP / mes</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-7 pt-6 border-t border-white/10">
+          <div class="text-xs text-white/25 uppercase tracking-widest mb-4 font-semibold">Incluido en el retainer</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs px-3 py-1.5 rounded-full glass border border-white/10 text-white/55">8 servicios activos</span>
+            <span class="text-xs px-3 py-1.5 rounded-full glass border border-white/10 text-white/55">Reporte diario IA</span>
+            <span class="text-xs px-3 py-1.5 rounded-full glass border border-white/10 text-white/55">Analytics GA4</span>
+            <span class="text-xs px-3 py-1.5 rounded-full glass border border-white/10 text-white/55">Sesión estratégica mensual</span>
+            <span class="text-xs px-3 py-1.5 rounded-full glass border border-white/10 text-white/55">3 productos cubiertos</span>
+            <span class="text-xs px-3 py-1.5 rounded-full glass border border-white/10 text-white/55">Alertas 24/7</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     CTA FINAL
+═══════════════════════════════════════════════ -->
+<section class="relative z-10 py-24 px-6 text-center overflow-hidden">
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div class="w-80 h-80 rounded-full bg-accent/10 blur-3xl"></div>
+  </div>
+  <div class="max-w-2xl mx-auto relative">
+    <div class="lbl rv mb-6">¿Arrancamos?</div>
+    <h2 class="rv d1 font-display font-bold leading-tight mb-6" style="font-size:clamp(2.5rem,6vw,4rem)">
+      <span class="tgw">Tu producto,</span><br>
+      <span class="sa tgg" style="font-size:1.1em">con estrategia.</span>
+    </h2>
+    <p class="rv d2 text-white/45 text-lg mb-12 max-w-lg mx-auto leading-relaxed">
+      El sistema ya funciona. Ahora lo hacemos crecer con inteligencia y datos reales.
+    </p>
+    <div class="rv d3 flex items-center justify-center">
+      <a href="https://wa.me/573112634779?text=Hola%20Nicol%C3%A1s%2C%20vi%20la%20propuesta%20del%20retainer%20y%20me%20interesa%20hablar." target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-12 py-4 rounded-full bg-accent text-white font-bold text-sm hover:bg-indigo-500 transition-all shadow-2xl shadow-accent/30">
+        <i data-lucide="message-circle" class="w-4 h-4"></i>
+        Hablemos
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="relative z-10 py-8 px-6 border-t border-white/[.05]">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-white/25">
+    <div>Molu Studio × OPE Suites · Partner de Producto Digital</div>
+    <div>Abril 2026 · Documento confidencial</div>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+  document.querySelectorAll('.rv').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight) { el.classList.add('on'); }
+    else { obs.observe(el); }
+  });
+
+  const sp = document.getElementById('sp');
+  window.addEventListener('scroll', () => {
+    sp.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100) + '%';
+  }, { passive: true });
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+
+</body>
+</html>
