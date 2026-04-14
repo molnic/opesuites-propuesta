@@ -154,11 +154,11 @@
       <div class="lg:col-span-7 pt-0 lg:pt-6 flex flex-col gap-6 lg:gap-8">
 
         <!-- Badge -->
-        <div class="rv animate-fade-in inline-flex items-center gap-2 w-fit px-4 py-2 rounded-full glass-strong text-xs font-semibold">
-          <div class="pdot"></div>
+        <div class="rv animate-fade-in inline-flex items-center gap-2 w-fit max-w-full px-4 py-2 rounded-full glass-strong text-xs font-semibold flex-wrap">
+          <div class="pdot flex-shrink-0"></div>
           <span class="text-emerald-400">Propuesta activa</span>
-          <span class="text-white/25 mx-1">·</span>
-          <span class="text-white/55">Retainer Mensual — OPE Suites</span>
+          <span class="text-white/25 hidden sm:inline">·</span>
+          <span class="text-white/55 hidden sm:inline">Retainer Mensual — OPE Suites</span>
         </div>
 
         <!-- Headline -->
@@ -171,7 +171,7 @@
         </div>
 
         <!-- Description -->
-        <p class="rv d2 text-lg text-white/45 max-w-xl leading-relaxed">
+        <p class="rv d2 text-base lg:text-lg text-white/45 max-w-xl leading-relaxed">
           Un partnership mensual donde Molu Studio actúa como tu equipo de producto externo:
           mantiene el sistema, lee los datos y te dice qué hacer con ellos.
         </p>
@@ -389,7 +389,7 @@
     <div class="grid md:grid-cols-2 gap-5">
 
       <!-- Scenario 1: daily report -->
-      <div class="rv glass-gold rounded-2xl p-7 hc relative overflow-hidden">
+      <div class="rv glass-gold rounded-2xl p-5 sm:p-7 hc relative overflow-hidden">
         <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-yellow-500/8 rounded-full blur-3xl pointer-events-none"></div>
         <div class="flex items-start gap-4 relative">
           <div class="w-12 h-12 rounded-2xl bg-yellow-500/15 border border-yellow-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -414,7 +414,7 @@
       </div>
 
       <!-- Scenario 2: 3am alert -->
-      <div class="rv d1 glass rounded-2xl p-7 hc relative overflow-hidden">
+      <div class="rv d1 glass rounded-2xl p-5 sm:p-7 hc relative overflow-hidden">
         <div class="absolute -top-8 -right-8 w-32 h-32 bg-red-500/6 rounded-full blur-3xl pointer-events-none"></div>
         <div class="flex items-start gap-4 relative">
           <div class="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -444,7 +444,7 @@
       </div>
 
       <!-- Scenario 3: monthly session -->
-      <div class="rv glass-strong rounded-2xl p-7 hc relative overflow-hidden">
+      <div class="rv glass-strong rounded-2xl p-5 sm:p-7 hc relative overflow-hidden">
         <div class="flex items-start gap-4 relative">
           <div class="w-12 h-12 rounded-2xl bg-accent/20 border border-accent/30 flex items-center justify-center flex-shrink-0 mt-0.5">
             <i data-lucide="calendar-check" class="w-6 h-6 text-indigo-300"></i>
@@ -467,7 +467,7 @@
       </div>
 
       <!-- Scenario 4: analytics -->
-      <div class="rv d1 glass rounded-2xl p-7 hc relative overflow-hidden">
+      <div class="rv d1 glass rounded-2xl p-5 sm:p-7 hc relative overflow-hidden">
         <div class="flex items-start gap-4 relative">
           <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
             <i data-lucide="trending-up" class="w-6 h-6 text-emerald-400"></i>
@@ -647,7 +647,7 @@
     <div class="rv grid md:grid-cols-2 gap-5">
 
       <!-- Incluido -->
-      <div class="glass-strong rounded-2xl p-7 border border-emerald-500/15">
+      <div class="glass-strong rounded-2xl p-5 sm:p-7 border border-emerald-500/15">
         <div class="flex items-center gap-3 mb-6">
           <div class="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center flex-shrink-0">
             <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
@@ -699,7 +699,7 @@
       </div>
 
       <!-- No incluido -->
-      <div class="glass rounded-2xl p-7 border border-white/[.05]">
+      <div class="glass rounded-2xl p-5 sm:p-7 border border-white/[.05]">
         <div class="flex items-center gap-3 mb-6">
           <div class="w-8 h-8 rounded-xl bg-white/8 border border-white/10 flex items-center justify-center flex-shrink-0">
             <i data-lucide="package-plus" class="w-4 h-4 text-white/50"></i>
@@ -756,7 +756,7 @@
     </div>
 
     <div class="grid md:grid-cols-3 gap-6">
-      <div class="rv glass rounded-2xl p-7 hc relative overflow-hidden">
+      <div class="rv glass rounded-2xl p-5 sm:p-7 hc relative overflow-hidden">
         <div class="absolute top-3 right-4 text-7xl font-bold font-display text-white/[.025] leading-none select-none">D</div>
         <div class="w-10 h-10 rounded-xl bg-accent/15 border border-accent/20 flex items-center justify-center mb-5">
           <i data-lucide="sunrise" class="w-5 h-5 text-indigo-400"></i>
@@ -766,7 +766,7 @@
         <p class="text-sm text-white/45 leading-relaxed">Monitoreo continuo, alertas y reporte matutino con IA. Sin intervención manual — los datos llegan a ti cada mañana.</p>
       </div>
 
-      <div class="rv d1 glass rounded-2xl p-7 hc relative overflow-hidden">
+      <div class="rv d1 glass rounded-2xl p-5 sm:p-7 hc relative overflow-hidden">
         <div class="absolute top-3 right-4 text-7xl font-bold font-display text-white/[.025] leading-none select-none">S</div>
         <div class="w-10 h-10 rounded-xl bg-yellow-500/15 border border-yellow-500/20 flex items-center justify-center mb-5">
           <i data-lucide="git-commit" class="w-5 h-5 text-yellow-400"></i>
@@ -776,7 +776,7 @@
         <p class="text-sm text-white/45 leading-relaxed">Implementamos ajustes, correcciones y mejoras de forma continua. Cada semana el sistema está un poco mejor.</p>
       </div>
 
-      <div class="rv d2 glass rounded-2xl p-7 hc relative overflow-hidden">
+      <div class="rv d2 glass rounded-2xl p-5 sm:p-7 hc relative overflow-hidden">
         <div class="absolute top-3 right-4 text-7xl font-bold font-display text-white/[.025] leading-none select-none">M</div>
         <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-5">
           <i data-lucide="target" class="w-5 h-5 text-emerald-400"></i>
@@ -811,12 +811,12 @@
 
     <div class="rv glass-strong rounded-3xl overflow-hidden border border-accent/20">
 
-      <div class="relative p-8 pb-6 border-b border-white/10">
+      <div class="relative p-5 sm:p-8 pb-5 sm:pb-6 border-b border-white/10">
         <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent pointer-events-none"></div>
-        <div class="relative flex justify-between items-start gap-4 flex-wrap">
+        <div class="relative flex justify-between items-start gap-3 flex-wrap">
           <div>
             <div class="lbl mb-2">Retainer Mensual</div>
-            <h3 class="font-display text-xl font-bold text-white">Partner de Producto Digital</h3>
+            <h3 class="font-display text-lg sm:text-xl font-bold text-white">Partner de Producto Digital</h3>
             <p class="text-white/40 text-sm mt-1">OPE Suites × Molu Studio</p>
           </div>
           <div class="px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 text-xs font-semibold self-start">
@@ -825,32 +825,32 @@
         </div>
       </div>
 
-      <div class="p-8">
+      <div class="p-5 sm:p-8">
         <div class="space-y-4 mb-8">
-          <div class="flex justify-between items-start">
-            <div>
+          <div class="flex justify-between items-start gap-4">
+            <div class="min-w-0">
               <div class="text-sm font-medium text-white">Retainer de servicio</div>
-              <div class="text-xs text-white/35 mt-0.5">Operación, analytics, estrategia y mejoras continuas de los 3 productos</div>
+              <div class="text-xs text-white/35 mt-0.5 leading-relaxed">Operación, analytics, estrategia y mejoras continuas</div>
             </div>
-            <div class="text-sm font-semibold text-white font-display tabular-nums">$1.100.000</div>
+            <div class="text-sm font-semibold text-white font-display tabular-nums flex-shrink-0">$1.100.000</div>
           </div>
-          <div class="flex justify-between items-start">
-            <div>
+          <div class="flex justify-between items-start gap-4">
+            <div class="min-w-0">
               <div class="text-sm font-medium text-white">Infraestructura administrada</div>
-              <div class="text-xs text-white/35 mt-0.5">Vercel Pro, Supabase, Mapbox, dominio</div>
+              <div class="text-xs text-white/35 mt-0.5">Vercel, Supabase, Mapbox, dominio</div>
             </div>
-            <div class="text-sm font-semibold text-white font-display tabular-nums">$100.000</div>
+            <div class="text-sm font-semibold text-white font-display tabular-nums flex-shrink-0">$100.000</div>
           </div>
         </div>
 
         <div class="border-t border-white/10 pt-6">
-          <div class="flex justify-between items-center">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <div>
               <div class="text-base font-bold font-display text-white">Total mensual</div>
               <div class="text-xs text-white/35 mt-1 font-medium" style="font-style:italic">Si dejamos de generarte valor, no firmas otro mes.</div>
             </div>
-            <div class="text-right">
-              <div class="font-bold font-display tgp tabular-nums" style="font-size:2.4rem;line-height:1">$1.200.000</div>
+            <div class="sm:text-right">
+              <div class="font-bold font-display tgp tabular-nums" style="font-size:clamp(2rem,8vw,2.4rem);line-height:1">$1.200.000</div>
               <div class="text-xs text-white/35 mt-1">COP / mes</div>
             </div>
           </div>
