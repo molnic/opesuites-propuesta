@@ -32,6 +32,7 @@
 
   <style>
     *, *::before, *::after { box-sizing: border-box; }
+    html { overflow-x: hidden; }
     body { background:#060810; color:#F1F5F9; font-family:'Inter',sans-serif; overflow-x:hidden; }
 
     /* ── Mesh background ─────────── */
@@ -147,11 +148,11 @@
   <div class="absolute inset-0 z-0 pointer-events-none"
     style="background:radial-gradient(ellipse 60% 55% at 30% 45%,rgba(99,102,241,.10) 0%,transparent 60%)"></div>
 
-  <div class="max-w-6xl mx-auto w-full relative z-10">
-    <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+  <div class="max-w-6xl mx-auto w-full min-w-0 relative z-10">
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start min-w-0">
 
       <!-- LEFT: headline + CTAs -->
-      <div class="lg:col-span-7 pt-0 lg:pt-6 flex flex-col gap-6 lg:gap-8">
+      <div class="lg:col-span-7 pt-0 lg:pt-6 flex flex-col gap-6 lg:gap-8 min-w-0 w-full">
 
         <!-- Badge -->
         <div class="rv animate-fade-in inline-flex items-center gap-2 w-fit max-w-full px-4 py-2 rounded-full glass-strong text-xs font-semibold flex-wrap">
@@ -171,18 +172,18 @@
         </div>
 
         <!-- Description -->
-        <p class="rv d2 text-base lg:text-lg text-white/45 max-w-xl leading-relaxed">
+        <p class="rv d2 text-base lg:text-lg text-white/45 leading-relaxed">
           Un partnership mensual donde Molu Studio actúa como tu equipo de producto externo:
           mantiene el sistema, lee los datos y te dice qué hacer con ellos.
         </p>
 
         <!-- CTAs -->
-        <div class="rv d3 flex flex-col sm:flex-row gap-4">
-          <a href="#que-recibes" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-accent text-white font-semibold text-sm hover:bg-indigo-500 transition-all shadow-xl shadow-accent/25">
+        <div class="rv d3 flex flex-col sm:flex-row gap-3">
+          <a href="#que-recibes" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-accent text-white font-semibold text-sm hover:bg-indigo-500 transition-all shadow-xl shadow-accent/25">
             ¿Qué recibes exactamente?
-            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+            <i data-lucide="arrow-down" class="w-4 h-4 flex-shrink-0"></i>
           </a>
-          <a href="#inversion" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full glass border border-white/10 text-white/65 font-medium text-sm hover:text-white hover:border-white/20 transition-all">
+          <a href="#inversion" class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 rounded-full glass border border-white/10 text-white/65 font-medium text-sm hover:text-white hover:border-white/20 transition-all">
             Ver inversión →
           </a>
         </div>
@@ -190,7 +191,7 @@
       </div>
 
       <!-- RIGHT: value props + product marquee -->
-      <div class="lg:col-span-5 lg:mt-10 flex flex-col gap-3 lg:gap-4">
+      <div class="lg:col-span-5 lg:mt-10 flex flex-col gap-3 lg:gap-4 min-w-0 w-full">
 
         <!-- Value props card -->
         <div class="rv d2 glass-strong rounded-3xl p-6 relative overflow-hidden" style="overflow:hidden">
