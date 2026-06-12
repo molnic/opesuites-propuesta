@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cotización · Integración Salto KS · OPE Suites × Molu Studio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,300&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Space Grotesk"', 'sans-serif'],
+            body:    ['Inter', 'sans-serif'],
+            serif:   ['Fraunces', 'serif'],
+          },
+          colors: {
+            ink:    '#060810',
+            accent: '#6366F1',
+            gold:   '#E8C27A',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { overflow-x: hidden; scroll-behavior: smooth; }
+    body { background:#060810; color:#F1F5F9; font-family:'Inter',sans-serif; overflow-x:hidden; }
+
+    /* ── Mesh background ─────────── */
+    .mesh-bg {
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background:
+        radial-gradient(ellipse 70% 50% at 15%  5%, rgba(99,102,241,.12) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 40% at 85% 85%, rgba(232,194,122,.08) 0%, transparent 55%);
+    }
+    body::before {
+      content:''; position:fixed; inset:0; z-index:1; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity:.025;
+    }
+
+    /* ── Glass ───────────────────── */
+    .glass        { background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,rgba(255,255,255,.01) 100%); border:1px solid rgba(255,255,255,.06); backdrop-filter:blur(12px); }
+    .glass-strong { background:linear-gradient(135deg,rgba(99,102,241,.08) 0%,rgba(255,255,255,.02) 100%); border:1px solid rgba(99,102,241,.15); backdrop-filter:blur(20px); }
+    .glass-gold   { background:linear-gradient(135deg,rgba(232,194,122,.07) 0%,rgba(255,255,255,.01) 100%); border:1px solid rgba(232,194,122,.14); backdrop-filter:blur(12px); }
+
+    /* ── Text gradients ──────────── */
+    .tgw { background:linear-gradient(180deg,#fff 0%,#94a3b8 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .tgp { background:linear-gradient(135deg,#a5b4fc,#818cf8);       -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .tgg { background:linear-gradient(135deg,#e8c27a,#f0d9a8);       -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+    /* ── Serif italic ────────────── */
+    .sa { font-family:'Fraunces',serif; font-style:italic; font-weight:300; }
+
+    /* ── Section label ───────────── */
+    .lbl { font-size:10px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:#6366F1; }
+
+    /* ── Divider ─────────────────── */
+    .dv { height:1px; background:linear-gradient(90deg,transparent,rgba(99,102,241,.3),transparent); }
+
+    /* ── Reveal ──────────────────── */
+    .rv { opacity:0; transform:translateY(22px); transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+    .rv.on { opacity:1; transform:translateY(0); }
+    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
+    .d4{transition-delay:.4s} .d5{transition-delay:.5s} .d6{transition-delay:.6s}
+
+    /* ── Hover cards ─────────────── */
+    .hc { transition:all .3s cubic-bezier(.16,1,.3,1); }
+    .hc:hover { transform:translateY(-4px); border-color:rgba(99,102,241,.25)!important; }
+
+    /* ── Tier card accent on hover ─ */
+    .tier:hover { transform:translateY(-4px); }
+    .tier { transition:all .3s cubic-bezier(.16,1,.3,1); }
+
+    /* ── Step badge ──────────────── */
+    .sb { width:26px; height:26px; border-radius:6px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(99,102,241,.15); border:1px solid rgba(99,102,241,.25); font-size:11px; font-weight:700; color:#a5b4fc; font-family:'Space Grotesk',sans-serif; }
+
+    /* ── Scroll progress ─────────── */
+    #sp { position:fixed; top:0; left:0; height:2px; z-index:1000; background:linear-gradient(90deg,#6366F1,#E8C27A); transition:width .1s linear; }
+
+    /* ── Chips / level badges ────── */
+    .chip-g { font-size:10px; font-weight:700; padding:2px 8px; border-radius:999px; background:rgba(232,194,122,.12); border:1px solid rgba(232,194,122,.22); color:#F0D9A8; }
+    .chip-p { font-size:10px; font-weight:700; padding:2px 8px; border-radius:999px; background:rgba(99,102,241,.12); border:1px solid rgba(99,102,241,.22); color:#a5b4fc; }
+
+    .lv { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:11px; letter-spacing:.08em; padding:3px 10px; border-radius:999px; }
+    .lv-s  { background:rgba(16,185,129,.12);  border:1px solid rgba(16,185,129,.28);  color:#6ee7b7; }
+    .lv-m  { background:rgba(99,102,241,.12);  border:1px solid rgba(99,102,241,.28);  color:#a5b4fc; }
+    .lv-l  { background:rgba(232,194,122,.12); border:1px solid rgba(232,194,122,.28); color:#f0d9a8; }
+    .lv-xl { background:rgba(244,63,94,.12);   border:1px solid rgba(244,63,94,.28);   color:#fda4af; }
+  </style>
+</head>
+<body>
+
+<div id="sp" style="width:0%"></div>
+<div class="mesh-bg"></div>
+
+<!-- ═══════════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════════ -->
+<nav class="fixed top-0 w-full z-50 glass border-b border-white/[.05] px-6 py-4">
+  <div class="max-w-6xl mx-auto flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <span class="text-sm font-display font-semibold text-white/90">Molu Studio</span>
+      <span class="text-white/20">×</span>
+      <span class="text-sm font-medium text-white/55">OPE Suites</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8 text-xs font-medium text-white/45">
+      <a href="#como"        class="hover:text-white transition-colors">Cómo funciona</a>
+      <a href="#niveles"     class="hover:text-white transition-colors">Niveles</a>
+      <a href="#cotizacion"  class="hover:text-white transition-colors">Cotización</a>
+      <a href="#condiciones" class="hover:text-white transition-colors">Condiciones</a>
+    </div>
+    <a href="#cotizacion" class="text-xs font-semibold px-4 py-2 rounded-full bg-accent/20 border border-accent/30 text-indigo-300 hover:bg-accent/30 transition-all">
+      Ver cotización
+    </a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════ -->
+<section class="relative min-h-dvh flex items-center px-6 pt-28 pb-16 lg:pt-24 lg:pb-20">
+
+  <div class="absolute inset-0 z-0 pointer-events-none"
+    style="background:radial-gradient(ellipse 60% 55% at 30% 45%,rgba(99,102,241,.10) 0%,transparent 60%)"></div>
+
+  <div class="max-w-6xl mx-auto w-full min-w-0 relative z-10">
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start min-w-0">
+
+      <!-- LEFT -->
+      <div class="lg:col-span-7 pt-0 lg:pt-6 flex flex-col gap-6 lg:gap-8 min-w-0 w-full">
+
+        <div class="rv inline-flex items-center gap-2 w-fit max-w-full px-4 py-2 rounded-full glass-strong text-xs font-semibold flex-wrap">
+          <i data-lucide="key-round" class="w-3.5 h-3.5 text-indigo-300 flex-shrink-0"></i>
+          <span class="text-indigo-300">Cotización de desarrollo</span>
+          <span class="text-white/25 hidden sm:inline">·</span>
+          <span class="text-white/55 hidden sm:inline">Integración Salto KS — OPE Suites</span>
+        </div>
+
+        <div class="rv d1">
+          <h1 class="font-display font-bold leading-[.92] tracking-tight">
+            <span class="tgw block" style="font-size:clamp(2.2rem,5.5vw,3.8rem)">El PIN de cada huésped,</span>
+            <span class="sa tgg block" style="font-size:clamp(3rem,8.5vw,6rem)">generado solo.</span>
+            <span class="tgw block" style="font-size:clamp(2rem,5vw,3.2rem)">Sin pasos manuales.</span>
+          </h1>
+        </div>
+
+        <p class="rv d2 text-base lg:text-lg text-white/45 leading-relaxed max-w-xl">
+          Conectamos el CRM con <span class="text-white/70 font-medium">Salto KS</span> para que, al hacer check-in,
+          el PIN de la habitación se genere automáticamente y aparezca en la reserva. Al check-out, se desactiva solo.
+          <span class="text-white/70 font-medium">Adiós al proceso manual en cada llegada.</span>
+        </p>
+
+        <div class="rv d3 flex flex-col sm:flex-row gap-3">
+          <a href="#cotizacion" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-accent text-white font-semibold text-sm hover:bg-indigo-500 transition-all shadow-xl shadow-accent/25">
+            Ver la cotización
+            <i data-lucide="arrow-down" class="w-4 h-4 flex-shrink-0"></i>
+          </a>
+          <a href="#como" class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 rounded-full glass border border-white/10 text-white/65 font-medium text-sm hover:text-white hover:border-white/20 transition-all">
+            Cómo cotizamos →
+          </a>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: model summary card -->
+      <div class="lg:col-span-5 lg:mt-10 flex flex-col gap-3 lg:gap-4 min-w-0 w-full">
+
+        <div class="rv d2 glass-strong rounded-3xl p-6 relative overflow-hidden">
+          <div class="absolute top-0 right-0 -mr-16 -mt-16 w-48 h-48 rounded-full bg-accent/8 blur-3xl pointer-events-none"></div>
+
+          <div class="flex items-center gap-2 mb-6">
+            <i data-lucide="sparkles" class="w-4 h-4 text-gold"></i>
+            <span class="text-xs font-semibold text-gold tracking-wide">La cotización en 4 ideas</span>
+          </div>
+
+          <div class="flex flex-col gap-0 relative">
+            <div class="flex items-start gap-4 py-4 border-b border-white/[.06]">
+              <div class="w-10 h-10 rounded-xl bg-yellow-500/15 border border-yellow-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i data-lucide="workflow" class="w-5 h-5 text-yellow-400"></i>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-white font-display leading-snug">Nivel L · Complejo</div>
+                <div class="text-xs text-white/40 mt-0.5 leading-relaxed">Integración con un sistema externo, que cruza reservas, backend y la pantalla de detalle.</div>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4 py-4 border-b border-white/[.06]">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i data-lucide="badge-dollar-sign" class="w-5 h-5 text-emerald-400"></i>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-white font-display leading-snug">$1.600.000 COP · precio cerrado</div>
+                <div class="text-xs text-white/40 mt-0.5 leading-relaxed">Sin sorpresas. 50% al iniciar, 50% al entregar funcionando.</div>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4 py-4 border-b border-white/[.06]">
+              <div class="w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i data-lucide="clock" class="w-5 h-5 text-indigo-400"></i>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-white font-display leading-snug">1 – 2 semanas</div>
+                <div class="text-xs text-white/40 mt-0.5 leading-relaxed">Desde que Salto entrega las credenciales de su API.</div>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4 pt-4">
+              <div class="w-10 h-10 rounded-xl bg-rose-500/15 border border-rose-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i data-lucide="building-2" class="w-5 h-5 text-rose-400"></i>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-white font-display leading-snug">18 habitaciones · 2 sedes</div>
+                <div class="text-xs text-white/40 mt-0.5 leading-relaxed">15 de Calle 100 + 3 de Usaquén, las que hoy tienen cerradura Salto.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     CÓMO FUNCIONA
+═══════════════════════════════════════════════ -->
+<section id="como" class="relative z-10 py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="lbl rv mb-4">Cómo cotizamos</div>
+      <h2 class="rv d1 font-display font-bold leading-tight mb-5" style="font-size:clamp(2rem,5vw,3.2rem)">
+        <span class="tgw">De una idea suelta a un</span>
+        <span class="sa tgg">precio claro.</span>
+      </h2>
+      <p class="rv d2 text-white/45 leading-relaxed">
+        Cada desarrollo nuevo sigue el mismo camino. Sin sorpresas, sin "te cuento cuántas horas llevo".
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-4">
+      <div class="rv d1 glass rounded-2xl p-6 hc">
+        <div class="sb mb-4">1</div>
+        <h3 class="font-display font-semibold text-white text-sm mb-2">Lo describes</h3>
+        <p class="text-xs text-white/40 leading-relaxed">Nos cuentas qué necesitas. Lo aterrizamos en un alcance concreto, por escrito.</p>
+      </div>
+      <div class="rv d2 glass rounded-2xl p-6 hc">
+        <div class="sb mb-4">2</div>
+        <h3 class="font-display font-semibold text-white text-sm mb-2">Lo clasificamos</h3>
+        <p class="text-xs text-white/40 leading-relaxed">Según su complejidad e impacto, cae en un nivel: S, M, L o XL.</p>
+      </div>
+      <div class="rv d3 glass rounded-2xl p-6 hc">
+        <div class="sb mb-4">3</div>
+        <h3 class="font-display font-semibold text-white text-sm mb-2">Apruebas el precio</h3>
+        <p class="text-xs text-white/40 leading-relaxed">Precio cerrado y fecha de entrega. Apruebas y pagas el 50% para arrancar.</p>
+      </div>
+      <div class="rv d4 glass rounded-2xl p-6 hc">
+        <div class="sb mb-4">4</div>
+        <h3 class="font-display font-semibold text-white text-sm mb-2">Entregamos y cierras</h3>
+        <p class="text-xs text-white/40 leading-relaxed">Lo ves funcionando en tu plataforma y pagas el 50% restante.</p>
+      </div>
+    </div>
+
+    <!-- Retainer callout -->
+    <div class="rv d2 glass-gold rounded-2xl p-6 md:p-8 mt-10 flex flex-col md:flex-row md:items-center gap-5">
+      <div class="w-12 h-12 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
+        <i data-lucide="info" class="w-6 h-6 text-gold"></i>
+      </div>
+      <div class="flex-1">
+        <h3 class="font-display font-semibold text-white mb-1.5">¿Y el retainer mensual de $400.000?</h3>
+        <p class="text-sm text-white/50 leading-relaxed">
+          El retainer cubre que la plataforma <span class="text-white/75 font-medium">siga funcionando</span>: monitoreo, disponibilidad,
+          seguridad y ajustes menores del día a día. Los <span class="text-white/75 font-medium">desarrollos nuevos</span> que amplían lo que la
+          plataforma hace —como esta integración con Salto— se cotizan aparte. Así sabes con claridad qué es mantenimiento y qué es crecimiento.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     NIVELES
+═══════════════════════════════════════════════ -->
+<section id="niveles" class="relative z-10 py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="lbl rv mb-4">Niveles de desarrollo</div>
+      <h2 class="rv d1 font-display font-bold leading-tight mb-5" style="font-size:clamp(2rem,5vw,3.2rem)">
+        <span class="tgw">Cuatro tallas para</span>
+        <span class="sa tgg">cualquier idea.</span>
+      </h2>
+      <p class="rv d2 text-white/45 leading-relaxed">
+        Cada requerimiento entra en uno de estos cuatro niveles. La integración Salto KS es un
+        <span class="text-gold font-medium">nivel L</span>: integración externa que cruza varios módulos.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+      <!-- S -->
+      <div class="rv d1 tier glass rounded-2xl p-6 flex flex-col border border-emerald-500/15 hover:border-emerald-500/30">
+        <div class="flex items-center justify-between mb-5">
+          <span class="lv lv-s">S · SENCILLO</span>
+          <i data-lucide="feather" class="w-5 h-5 text-emerald-400"></i>
+        </div>
+        <p class="text-xs text-white/40 leading-relaxed mb-5 flex-1">
+          Un cambio acotado, sin lógica de negocio nueva. Un campo, un botón, un documento, un ajuste visual puntual.
+        </p>
+        <ul class="space-y-2 text-xs text-white/55 mb-6">
+          <li class="flex items-center gap-2"><i data-lucide="clock" class="w-3.5 h-3.5 text-white/30"></i> 2 – 4 días</li>
+          <li class="flex items-center gap-2"><i data-lucide="git-branch" class="w-3.5 h-3.5 text-white/30"></i> Toca 1 módulo</li>
+        </ul>
+        <div class="mt-auto pt-5 border-t border-white/[.06]">
+          <div class="text-[10px] text-white/35 uppercase tracking-wider mb-1">Desde</div>
+          <div class="font-display font-bold text-white text-xl">$250.000<span class="text-sm text-white/35 font-medium"> – 400.000</span></div>
+          <div class="text-[10px] text-white/30 mt-0.5">COP</div>
+        </div>
+      </div>
+
+      <!-- M -->
+      <div class="rv d2 tier glass rounded-2xl p-6 flex flex-col border border-indigo-500/15 hover:border-indigo-500/30">
+        <div class="flex items-center justify-between mb-5">
+          <span class="lv lv-m">M · MEDIANO</span>
+          <i data-lucide="layout-grid" class="w-5 h-5 text-indigo-400"></i>
+        </div>
+        <p class="text-xs text-white/40 leading-relaxed mb-5 flex-1">
+          Un dato nuevo con su interfaz y algo de lógica: registrar, calcular o mostrar información que antes no existía.
+        </p>
+        <ul class="space-y-2 text-xs text-white/55 mb-6">
+          <li class="flex items-center gap-2"><i data-lucide="clock" class="w-3.5 h-3.5 text-white/30"></i> 1 – 2 semanas</li>
+          <li class="flex items-center gap-2"><i data-lucide="git-branch" class="w-3.5 h-3.5 text-white/30"></i> Nuevo dato + UI</li>
+        </ul>
+        <div class="mt-auto pt-5 border-t border-white/[.06]">
+          <div class="text-[10px] text-white/35 uppercase tracking-wider mb-1">Desde</div>
+          <div class="font-display font-bold text-white text-xl">$600.000<span class="text-sm text-white/35 font-medium"> – 900.000</span></div>
+          <div class="text-[10px] text-white/30 mt-0.5">COP</div>
+        </div>
+      </div>
+
+      <!-- L (highlighted — este es el nivel de Salto) -->
+      <div class="rv d3 tier glass-gold rounded-2xl p-6 flex flex-col border border-gold/40 relative overflow-hidden">
+        <div class="flex items-center justify-between gap-2 mb-5">
+          <span class="lv lv-l">L · COMPLEJO</span>
+          <span class="chip-g whitespace-nowrap">Esta cotización</span>
+        </div>
+        <p class="text-xs text-white/45 leading-relaxed mb-5 flex-1">
+          Lógica que cruza varios módulos (reservas, backend, pantalla de detalle) o se integra con un sistema externo. Un flujo nuevo con estados y consecuencias.
+        </p>
+        <ul class="space-y-2 text-xs text-white/65 mb-6">
+          <li class="flex items-center gap-2"><i data-lucide="clock" class="w-3.5 h-3.5 text-gold/60"></i> 1 – 2 semanas</li>
+          <li class="flex items-center gap-2"><i data-lucide="git-branch" class="w-3.5 h-3.5 text-gold/60"></i> Varios módulos + API externa</li>
+        </ul>
+        <div class="mt-auto pt-5 border-t border-gold/[.12]">
+          <div class="text-[10px] text-white/35 uppercase tracking-wider mb-1">Salto KS · precio cerrado</div>
+          <div class="font-display font-bold text-white text-xl">$1.600.000</div>
+          <div class="text-[10px] text-white/30 mt-0.5">COP</div>
+        </div>
+      </div>
+
+      <!-- XL -->
+      <div class="rv d4 tier glass rounded-2xl p-6 flex flex-col border border-rose-500/15 hover:border-rose-500/30">
+        <div class="flex items-center justify-between mb-5">
+          <span class="lv lv-xl">XL · TRANSFORM.</span>
+          <i data-lucide="rocket" class="w-5 h-5 text-rose-400"></i>
+        </div>
+        <p class="text-xs text-white/40 leading-relaxed mb-5 flex-1">
+          Un proyecto en sí mismo: toca toda la plataforma, infraestructura o identidad. Cronograma y entregables dedicados.
+        </p>
+        <ul class="space-y-2 text-xs text-white/55 mb-6">
+          <li class="flex items-center gap-2"><i data-lucide="clock" class="w-3.5 h-3.5 text-white/30"></i> Cronograma propio</li>
+          <li class="flex items-center gap-2"><i data-lucide="git-branch" class="w-3.5 h-3.5 text-white/30"></i> Toda la plataforma</li>
+        </ul>
+        <div class="mt-auto pt-5 border-t border-white/[.06]">
+          <div class="text-[10px] text-white/35 uppercase tracking-wider mb-1">Desde</div>
+          <div class="font-display font-bold text-white text-xl">$3.000.000<span class="text-sm text-white/35 font-medium">+</span></div>
+          <div class="text-[10px] text-white/30 mt-0.5">COP · según alcance</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     COTIZACIÓN · SALTO KS (detalle completo)
+═══════════════════════════════════════════════ -->
+<section id="cotizacion" class="relative z-10 py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="lbl rv mb-4">Cotización · detalle completo</div>
+      <h2 class="rv d1 font-display font-bold leading-tight mb-5" style="font-size:clamp(2rem,5vw,3.2rem)">
+        <span class="tgw">Integración</span>
+        <span class="sa tgg">Salto KS.</span>
+      </h2>
+      <p class="rv d2 text-white/45 leading-relaxed">
+        Tus cerraduras digitales, conectadas al CRM. Esto es exactamente lo que incluye —y lo que no— para que apruebes con total claridad.
+      </p>
+    </div>
+
+    <!-- El problema -->
+    <div class="rv d1 glass rounded-2xl p-6 md:p-8 mb-4 flex flex-col md:flex-row gap-6 md:items-center">
+      <div class="w-12 h-12 rounded-xl bg-rose-500/12 border border-rose-500/20 flex items-center justify-center flex-shrink-0">
+        <i data-lucide="hand" class="w-6 h-6 text-rose-400"></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-3 mb-1.5 flex-wrap">
+          <h3 class="font-display font-semibold text-white">El problema que resuelve</h3>
+        </div>
+        <p class="text-sm text-white/45 leading-relaxed">
+          Hoy, en <span class="text-white/65">cada check-in</span>, el administrador entra a Salto KS, crea un PIN, se lo manda a recepción
+          y recepción se lo da al huésped. Se repite todos los días, en las 2 sedes.
+          <span class="text-white/65">Esta integración convierte ese proceso manual en un paso automático.</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Tarjeta principal: alcance -->
+    <div class="rv d2 glass-strong rounded-2xl p-6 md:p-8 border border-gold/20">
+      <div class="flex flex-col md:flex-row gap-6 md:items-start mb-2">
+        <div class="w-12 h-12 rounded-xl bg-gold/12 border border-gold/25 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="key-round" class="w-6 h-6 text-gold"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-1.5 flex-wrap">
+            <h3 class="font-display font-semibold text-white text-lg">Generación y revocación automática de PIN</h3>
+            <span class="lv lv-l">L · COMPLEJO</span>
+          </div>
+          <p class="text-sm text-white/45 leading-relaxed">
+            El PIN se crea solo al check-in, se muestra en la reserva y se desactiva solo al check-out.
+          </p>
+        </div>
+        <div class="md:text-right flex-shrink-0 md:pl-6 md:border-l border-white/[.08] mt-2 md:mt-0">
+          <div class="text-[10px] text-white/35 uppercase tracking-wider mb-1">Precio cerrado</div>
+          <div class="font-display font-bold text-white text-3xl">$1.600.000</div>
+          <div class="text-[10px] text-white/30">COP</div>
+        </div>
+      </div>
+
+      <!-- Qué incluye -->
+      <div class="dv my-6"></div>
+      <div class="flex items-center gap-2 mb-5">
+        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+        <div class="text-[10px] text-white/45 uppercase tracking-wider">Qué incluye</div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4 text-sm text-white/55">
+        <div class="flex items-start gap-3">
+          <i data-lucide="zap" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-white/80 font-medium">PIN automático al check-in.</span>
+            Al marcar el check-in, el sistema crea el PIN en la cerradura de esa habitación y lo asocia a la reserva.
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <i data-lucide="eye" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-white/80 font-medium">PIN visible en la reserva.</span>
+            Aparece en una sección "Acceso a la habitación" con botón para copiarlo. Recepción se lo confirma al huésped.
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <i data-lucide="lock" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-white/80 font-medium">Revocación al check-out.</span>
+            Al marcar el check-out, el PIN se desactiva solo. El huésped ya no puede volver a entrar.
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <i data-lucide="shield-alert" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-white/80 font-medium">Manejo de fallas resiliente.</span>
+            Si Salto no responde, el check-in se completa igual y avisa "PIN pendiente" para crearlo manual. La operación nunca se bloquea.
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <i data-lucide="refresh-cw" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-white/80 font-medium">Regenerar PIN (admin).</span>
+            Por si el huésped lo olvida o se necesita uno nuevo durante la estadía.
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <i data-lucide="history" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-white/80 font-medium">Trazabilidad.</span>
+            Cada PIN generado o revocado queda en el historial de la reserva (quién y cuándo).
+          </div>
+        </div>
+        <div class="flex items-start gap-3 sm:col-span-2">
+          <i data-lucide="building-2" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <span class="text-white/80 font-medium">Cobertura de las 2 sedes.</span>
+            Las 18 habitaciones que hoy tienen cerradura Salto KS: 15 de Calle 100 + 3 de Usaquén.
+          </div>
+        </div>
+      </div>
+
+      <!-- Qué NO incluye -->
+      <div class="dv my-6"></div>
+      <div class="flex items-center gap-2 mb-5">
+        <i data-lucide="minus-circle" class="w-4 h-4 text-white/40"></i>
+        <div class="text-[10px] text-white/45 uppercase tracking-wider">Qué no incluye (fuera de alcance)</div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-xs text-white/45">
+        <div class="flex items-start gap-2"><i data-lucide="x" class="w-3.5 h-3.5 text-white/30 flex-shrink-0 mt-0.5"></i><div>Las 7 Habitaciones Ejecutivas de Calle 100 que hoy <span class="text-white/60">no tienen cerradura Salto</span> (se agregan en un desarrollo menor si se equipan).</div></div>
+        <div class="flex items-start gap-2"><i data-lucide="x" class="w-3.5 h-3.5 text-white/30 flex-shrink-0 mt-0.5"></i><div>Envío automático del PIN al huésped por <span class="text-white/60">email, WhatsApp o SMS</span> (mejora futura cotizable aparte).</div></div>
+        <div class="flex items-start gap-2"><i data-lucide="x" class="w-3.5 h-3.5 text-white/30 flex-shrink-0 mt-0.5"></i><div>Acceso a <span class="text-white/60">áreas comunes</span> (ej. entrada principal de Usaquén). Se puede agregar como extensión.</div></div>
+        <div class="flex items-start gap-2"><i data-lucide="x" class="w-3.5 h-3.5 text-white/30 flex-shrink-0 mt-0.5"></i><div>El <span class="text-white/60">costo de la licencia / API de Salto KS</span>, que OPE paga directamente a Salto.</div></div>
+      </div>
+
+      <!-- Requisitos -->
+      <div class="dv my-6"></div>
+      <div class="flex items-center gap-2 mb-5">
+        <i data-lucide="list-checks" class="w-4 h-4 text-indigo-400"></i>
+        <div class="text-[10px] text-white/45 uppercase tracking-wider">Requisitos para arrancar (de OPE Suites)</div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-xs text-white/55">
+        <div class="flex items-start gap-2"><i data-lucide="key" class="w-3.5 h-3.5 text-indigo-400 flex-shrink-0 mt-0.5"></i><div>Credenciales de la API de Salto KS (Client ID + Secret) — ya solicitadas a Salto.</div></div>
+        <div class="flex items-start gap-2"><i data-lucide="receipt" class="w-3.5 h-3.5 text-indigo-400 flex-shrink-0 mt-0.5"></i><div>Confirmación de Salto sobre costo de la API y entorno de pruebas.</div></div>
+      </div>
+    </div>
+
+    <!-- A revisar por OPE (no bloquea) -->
+    <div class="rv d3 glass-gold rounded-2xl p-6 md:p-7 mt-4 flex flex-col md:flex-row gap-5 md:items-center">
+      <div class="w-11 h-11 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
+        <i data-lucide="battery-warning" class="w-5 h-5 text-gold"></i>
+      </div>
+      <div class="flex-1">
+        <h3 class="font-display font-semibold text-white text-sm mb-1.5">A revisar por OPE — no bloquea la integración</h3>
+        <p class="text-xs text-white/50 leading-relaxed">
+          Dos cerraduras aparecen <span class="text-white/75 font-medium">desconectadas (Offline)</span> en el panel de Salto: las habitaciones
+          <span class="text-white/75 font-medium">502 y 504</span> (Suite Deluxe, Calle 100), y la 502 además sin grupos de acceso.
+          La integración funciona normal para las otras 16 habitaciones; conviene revisar estas 2 (probablemente batería o WiFi)
+          para que, cuando se reserven, el PIN llegue bien a la cerradura. Es un tema operativo, no del desarrollo.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     CONDICIONES
+═══════════════════════════════════════════════ -->
+<section id="condiciones" class="relative z-10 py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="lbl rv mb-4">Cómo trabajamos</div>
+      <h2 class="rv d1 font-display font-bold leading-tight mb-5" style="font-size:clamp(2rem,5vw,3.2rem)">
+        <span class="tgw">Reglas claras,</span>
+        <span class="sa tgg">cero sorpresas.</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-4">
+
+      <div class="rv d1 glass rounded-2xl p-6 hc">
+        <div class="w-11 h-11 rounded-xl bg-indigo-500/12 border border-indigo-500/20 flex items-center justify-center mb-4">
+          <i data-lucide="wallet" class="w-5 h-5 text-indigo-400"></i>
+        </div>
+        <h3 class="font-display font-semibold text-white text-sm mb-2">Forma de pago</h3>
+        <p class="text-xs text-white/45 leading-relaxed">
+          50% al aprobar (para iniciar) y 50% contra entrega, cuando el desarrollo está funcionando en tu plataforma.
+        </p>
+      </div>
+
+      <div class="rv d2 glass rounded-2xl p-6 hc">
+        <div class="w-11 h-11 rounded-xl bg-indigo-500/12 border border-indigo-500/20 flex items-center justify-center mb-4">
+          <i data-lucide="clock" class="w-5 h-5 text-indigo-400"></i>
+        </div>
+        <h3 class="font-display font-semibold text-white text-sm mb-2">Tiempo de entrega</h3>
+        <p class="text-xs text-white/45 leading-relaxed">
+          1 a 2 semanas desde que Salto entrega las credenciales. El desarrollo lo garantizamos; los tiempos de Salto no dependen de nosotros.
+        </p>
+      </div>
+
+      <div class="rv d3 glass rounded-2xl p-6 hc">
+        <div class="w-11 h-11 rounded-xl bg-gold/12 border border-gold/20 flex items-center justify-center mb-4">
+          <i data-lucide="shield-check" class="w-5 h-5 text-gold"></i>
+        </div>
+        <h3 class="font-display font-semibold text-white text-sm mb-2">Garantía de 30 días</h3>
+        <p class="text-xs text-white/45 leading-relaxed">
+          Si algo del desarrollo entregado falla por un error nuestro, lo corregimos sin costo durante el primer mes.
+        </p>
+      </div>
+
+      <div class="rv d1 glass rounded-2xl p-6 hc">
+        <div class="w-11 h-11 rounded-xl bg-emerald-500/12 border border-emerald-500/20 flex items-center justify-center mb-4">
+          <i data-lucide="file-signature" class="w-5 h-5 text-emerald-400"></i>
+        </div>
+        <h3 class="font-display font-semibold text-white text-sm mb-2">Alcance cerrado</h3>
+        <p class="text-xs text-white/45 leading-relaxed">
+          Este documento define qué incluye. El precio es fijo para ese alcance acordado.
+        </p>
+      </div>
+
+      <div class="rv d2 glass rounded-2xl p-6 hc">
+        <div class="w-11 h-11 rounded-xl bg-rose-500/12 border border-rose-500/20 flex items-center justify-center mb-4">
+          <i data-lucide="refresh-cw" class="w-5 h-5 text-rose-400"></i>
+        </div>
+        <h3 class="font-display font-semibold text-white text-sm mb-2">Cambios de alcance</h3>
+        <p class="text-xs text-white/45 leading-relaxed">
+          Si a mitad de camino el requerimiento crece (ej. auto-envío al huésped), lo reclasificamos juntos y ajustamos antes de continuar.
+        </p>
+      </div>
+
+      <div class="rv d3 glass rounded-2xl p-6 hc">
+        <div class="w-11 h-11 rounded-xl bg-indigo-500/12 border border-indigo-500/20 flex items-center justify-center mb-4">
+          <i data-lucide="layers" class="w-5 h-5 text-indigo-400"></i>
+        </div>
+        <h3 class="font-display font-semibold text-white text-sm mb-2">Separado del retainer</h3>
+        <p class="text-xs text-white/45 leading-relaxed">
+          Este desarrollo no consume ni reemplaza el retainer de $400.000/mes, que sigue cubriendo la operación.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     CTA
+═══════════════════════════════════════════════ -->
+<section class="relative z-10 py-24 px-6 text-center overflow-hidden">
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div class="w-80 h-80 rounded-full bg-accent/10 blur-3xl"></div>
+  </div>
+  <div class="max-w-2xl mx-auto relative">
+    <div class="lbl rv mb-6">¿Arrancamos?</div>
+    <h2 class="rv d1 font-display font-bold leading-tight mb-6" style="font-size:clamp(2.5rem,6vw,4rem)">
+      <span class="tgw">Apruebas</span><br>
+      <span class="sa tgg" style="font-size:1.1em">y lo construimos.</span>
+    </h2>
+    <p class="rv d2 text-white/45 text-lg mb-12 max-w-lg mx-auto leading-relaxed">
+      Cuando llegan las credenciales de Salto, arrancamos. En 1 a 2 semanas tu equipo deja de generar PINs a mano.
+    </p>
+    <div class="rv d3 flex items-center justify-center">
+      <a href="https://wa.me/573112634779?text=Hola%20Nicol%C3%A1s%2C%20vi%20la%20cotizaci%C3%B3n%20de%20Salto%20KS%20y%20quiero%20avanzar." target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 px-12 py-4 rounded-full bg-accent text-white font-bold text-sm hover:bg-indigo-500 transition-all shadow-2xl shadow-accent/30">
+        <i data-lucide="message-circle" class="w-4 h-4"></i>
+        Hablemos
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="relative z-10 py-8 px-6 border-t border-white/[.05]">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-white/25">
+    <div>Molu Studio × OPE Suites · Cotización Integración Salto KS</div>
+    <div>Junio 2026 · Documento confidencial</div>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+  document.querySelectorAll('.rv').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight) { el.classList.add('on'); }
+    else { obs.observe(el); }
+  });
+
+  const sp = document.getElementById('sp');
+  window.addEventListener('scroll', () => {
+    sp.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100) + '%';
+  }, { passive: true });
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+
+</body>
+</html>
