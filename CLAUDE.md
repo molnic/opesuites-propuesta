@@ -9,6 +9,7 @@ Repositorio de **propuestas comerciales** de Molu Studio para el cliente **OPE S
 | `index.html` | Transformación digital inicial (CRM + Web). Tema azul/indigo. | `https://opesuites-propuesta.vercel.app/` |
 | `retainer.html` | Retainer mensual "Partner de Producto". Tema indigo + dorado. | `https://opesuites-propuesta.vercel.app/retainer.html` |
 | `desarrollos-adicionales.html` | Catálogo de desarrollos adicionales por niveles (S/M/L/XL). Mismo diseño que `retainer.html`. | `https://opesuites-propuesta.vercel.app/desarrollos-adicionales.html` |
+| `cotizacion-salto-ks.html` | Cotización del desarrollo **Integración Salto KS** (cerraduras digitales). Nivel L, $1.600.000 COP, 1-2 semanas. Reutiliza el catálogo (modelo + niveles) pero la sección "catálogo" se reemplaza por el detalle completo de esta cotización (qué incluye / no incluye / requisitos / cerraduras offline a revisar). Mismo diseño que `desarrollos-adicionales.html`. | `https://opesuites-propuesta.vercel.app/cotizacion-salto-ks.html` |
 
 Agregar un nuevo `.html` crea una propuesta nueva sin afectar las demás; cada archivo se sirve en su propia ruta.
 
@@ -36,4 +37,5 @@ Convenciones: textos en español; precios en COP con separador de miles por punt
 - El proyecto tiene un **retainer de $400.000 COP/mes** que cubre solo operación/funcionamiento de la plataforma. Los **desarrollos nuevos** (fuera del alcance inicial) se cobran aparte con el catálogo.
 - Modelo de cobro: **por niveles, no por hora.** S ($250–400k), M ($600–900k), L ($1.5–2M), XL (desde $3M). Pago **50% al iniciar / 50% a la entrega**.
 - Ítems cotizados actuales: PDF de reserva (S, $350k), depósitos/pagos parciales (M, $800k), flujo No-Show (M, $800k), cambio de identidad a **"KAZA LIVING"** (XL, desde $3.2M — antes se manejó como "Casa con Z").
+- **Integración Salto KS** (cerraduras digitales, nivel L, $1.6M): cotización dedicada en `cotizacion-salto-ks.html`. Genera/revoca PINs automáticamente al check-in/check-out vía la Connect API de Salto. Cubre 18 habitaciones (15 Calle 100 + 3 Usaquén). Depende de que Salto entregue credenciales de su API (correo enviado a `techsupport.cala@saltosystems.com`). El costo de la licencia/API de Salto lo paga OPE directo a Salto, no está incluido.
 - Channel manager del cliente: **Channex** (el ítem de rebranding incluye reconfigurar sus endpoints).
