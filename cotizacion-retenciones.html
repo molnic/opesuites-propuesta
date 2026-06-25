@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retenciones en la fuente · Propuesta de desarrollo · OPE Suites × Molu Studio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,300&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        fontFamily: { display:['"Space Grotesk"','sans-serif'], body:['Inter','sans-serif'], serif:['Fraunces','serif'] },
+        colors: { ink:'#060810', accent:'#6366F1', gold:'#E8C27A' }
+      }}
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing:border-box; }
+    html { overflow-x:hidden; scroll-behavior:smooth; }
+    body { background:#060810; color:#F1F5F9; font-family:'Inter',sans-serif; overflow-x:hidden; }
+
+    .mesh-bg { position:fixed; inset:0; z-index:0; pointer-events:none;
+      background:
+        radial-gradient(ellipse 70% 50% at 15%  5%, rgba(99,102,241,.12) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 40% at 85% 85%, rgba(232,194,122,.08) 0%, transparent 55%); }
+    body::before { content:''; position:fixed; inset:0; z-index:1; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity:.025; }
+
+    .glass        { background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,rgba(255,255,255,.01) 100%); border:1px solid rgba(255,255,255,.06); backdrop-filter:blur(12px); }
+    .glass-strong { background:linear-gradient(135deg,rgba(99,102,241,.08) 0%,rgba(255,255,255,.02) 100%); border:1px solid rgba(99,102,241,.15); backdrop-filter:blur(20px); }
+    .glass-gold   { background:linear-gradient(135deg,rgba(232,194,122,.07) 0%,rgba(255,255,255,.01) 100%); border:1px solid rgba(232,194,122,.14); backdrop-filter:blur(12px); }
+
+    .tgw { background:linear-gradient(180deg,#fff 0%,#94a3b8 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .tgg { background:linear-gradient(135deg,#e8c27a,#f0d9a8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .sa  { font-family:'Fraunces',serif; font-style:italic; font-weight:300; }
+    .lbl { font-size:10px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:#6366F1; }
+    .dv  { height:1px; background:linear-gradient(90deg,transparent,rgba(99,102,241,.3),transparent); }
+
+    .rv { opacity:0; transform:translateY(22px); transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+    .rv.on { opacity:1; transform:translateY(0); }
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}.d6{transition-delay:.6s}
+
+    .hc { transition:all .3s cubic-bezier(.16,1,.3,1); }
+    .hc:hover { transform:translateY(-4px); border-color:rgba(99,102,241,.25)!important; }
+    .sb { width:30px; height:30px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(99,102,241,.15); border:1px solid rgba(99,102,241,.25); font-size:12px; font-weight:700; color:#a5b4fc; font-family:'Space Grotesk',sans-serif; }
+    #sp { position:fixed; top:0; left:0; height:2px; z-index:1000; background:linear-gradient(90deg,#6366F1,#E8C27A); transition:width .1s linear; }
+
+    .lv  { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:11px; letter-spacing:.08em; padding:3px 10px; border-radius:999px; }
+    .lv-l { background:rgba(232,194,122,.12); border:1px solid rgba(232,194,122,.28); color:#f0d9a8; }
+    .chip { font-size:10px; font-weight:700; padding:3px 10px; border-radius:999px; background:rgba(99,102,241,.12); border:1px solid rgba(99,102,241,.22); color:#a5b4fc; }
+  </style>
+</head>
+<body>
+
+<div id="sp" style="width:0%"></div>
+<div class="mesh-bg"></div>
+
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-50 glass border-b border-white/[.05] px-6 py-4">
+  <div class="max-w-5xl mx-auto flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <span class="text-sm font-display font-semibold text-white/90">Molu Studio</span>
+      <span class="text-white/20">×</span>
+      <span class="text-sm font-medium text-white/55">OPE Suites</span>
+    </div>
+    <div class="hidden md:flex items-center gap-7 text-xs font-medium text-white/45">
+      <a href="#problema"  class="hover:text-white transition-colors">El problema</a>
+      <a href="#incluye"   class="hover:text-white transition-colors">Qué incluye</a>
+      <a href="#esfuerzo"  class="hover:text-white transition-colors">El esfuerzo</a>
+      <a href="#precio"    class="hover:text-white transition-colors">Precio</a>
+    </div>
+    <span class="lv lv-l">L · COMPLEJO</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="relative min-h-dvh flex items-center px-6 pt-32 pb-16">
+  <div class="absolute inset-0 z-0 pointer-events-none"
+    style="background:radial-gradient(ellipse 60% 55% at 30% 40%,rgba(99,102,241,.10) 0%,transparent 60%)"></div>
+
+  <div class="max-w-5xl mx-auto w-full relative z-10">
+    <div class="rv inline-flex items-center gap-2 px-4 py-2 rounded-full glass-strong text-xs font-semibold mb-7">
+      <i data-lucide="receipt" class="w-3.5 h-3.5 text-indigo-300"></i>
+      <span class="text-indigo-300">Propuesta de desarrollo</span>
+      <span class="text-white/25 hidden sm:inline">·</span>
+      <span class="text-white/55 hidden sm:inline">Módulo contable del CRM</span>
+    </div>
+
+    <h1 class="rv d1 font-display font-bold leading-[.95] tracking-tight mb-7">
+      <span class="tgw block" style="font-size:clamp(2.4rem,6vw,4.4rem)">Retenciones en la fuente</span>
+      <span class="sa tgg block" style="font-size:clamp(2.2rem,6vw,4rem)">directo en el CRM.</span>
+    </h1>
+
+    <p class="rv d2 text-base lg:text-lg text-white/50 leading-relaxed max-w-2xl mb-8">
+      Aplicar <span class="text-white/80 font-medium">Retefuente, ReteICA y ReteIVA</span> a una reserva con un clic,
+      que el saldo se ajuste solo y que contabilidad tenga cada retención discriminada en el informe.
+      Sin saldos falsos que impidan cerrar la cuenta.
+    </p>
+
+    <div class="rv d3 grid sm:grid-cols-3 gap-3 max-w-2xl">
+      <div class="glass rounded-xl p-4">
+        <div class="text-[10px] text-white/35 uppercase tracking-wider mb-1">Nivel</div>
+        <div class="font-display font-bold text-white text-lg">L · Complejo</div>
+      </div>
+      <div class="glass rounded-xl p-4">
+        <div class="text-[10px] text-white/35 uppercase tracking-wider mb-1">Precio cerrado</div>
+        <div class="font-display font-bold text-white text-lg">$1.900.000 <span class="text-xs text-white/35">COP</span></div>
+      </div>
+      <div class="glass rounded-xl p-4">
+        <div class="text-[10px] text-white/35 uppercase tracking-wider mb-1">Entrega</div>
+        <div class="font-display font-bold text-white text-lg">3 – 4 días</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section id="problema" class="relative z-10 py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="lbl rv mb-4">Por qué lo necesitamos</div>
+    <h2 class="rv d1 font-display font-bold leading-tight mb-8" style="font-size:clamp(1.8rem,4.5vw,2.8rem)">
+      <span class="tgw">Hoy una retención se ve como un</span> <span class="sa tgg">saldo que no existe.</span>
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-4">
+      <div class="rv d1 glass rounded-2xl p-6 hc">
+        <div class="w-11 h-11 rounded-xl bg-rose-500/12 border border-rose-500/20 flex items-center justify-center mb-4">
+          <i data-lucide="alert-circle" class="w-5 h-5 text-rose-400"></i>
+        </div>
+        <h3 class="font-display font-semibold text-white text-sm mb-2">El caso real</h3>
+        <p class="text-xs text-white/45 leading-relaxed">
+          Cuando un huésped factura a nombre de empresa, la empresa retiene parte del pago para declararlo a la DIAN.
+          El CRM no sabe de retenciones, así que ese valor queda como un saldo pendiente que en realidad ya no se debe.
+        </p>
+      </div>
+      <div class="rv d2 glass rounded-2xl p-6 hc">
+        <div class="w-11 h-11 rounded-xl bg-rose-500/12 border border-rose-500/20 flex items-center justify-center mb-4">
+          <i data-lucide="lock" class="w-5 h-5 text-rose-400"></i>
+        </div>
+        <h3 class="font-display font-semibold text-white text-sm mb-2">La consecuencia</h3>
+        <p class="text-xs text-white/45 leading-relaxed">
+          Ese saldo falso no deja cerrar la reserva ni hacer el check-out, y aparece como deuda en el calendario y los
+          informes. Recepción no puede meterlo como un pago, porque no es plata que entre.
+        </p>
+      </div>
+      <div class="rv d3 glass rounded-2xl p-6 hc">
+        <div class="w-11 h-11 rounded-xl bg-emerald-500/12 border border-emerald-500/20 flex items-center justify-center mb-4">
+          <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400"></i>
+        </div>
+        <h3 class="font-display font-semibold text-white text-sm mb-2">La solución</h3>
+        <p class="text-xs text-white/45 leading-relaxed">
+          Un control para aplicar la retención que corresponda. El saldo se ajusta al valor real, el check-out se habilita
+          y la factura sigue por el valor completo, con la retención discriminada aparte para contabilidad.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUÉ INCLUYE -->
+<section id="incluye" class="relative z-10 py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="lbl rv mb-4">Qué incluye</div>
+    <h2 class="rv d1 font-display font-bold leading-tight mb-4" style="font-size:clamp(1.8rem,4.5vw,2.8rem)">
+      <span class="tgw">Tres retenciones,</span> <span class="sa tgg">activables a voluntad.</span>
+    </h2>
+    <p class="rv d2 text-white/45 leading-relaxed max-w-2xl mb-10">
+      Cada retención se activa de forma independiente y manual desde el detalle de la reserva, solo cuando aplica.
+      El sistema calcula el monto; recepción decide cuándo usarla.
+    </p>
+
+    <!-- 3 retentions -->
+    <div class="grid md:grid-cols-3 gap-4 mb-10">
+      <div class="rv d1 glass-strong rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-3">
+          <span class="chip">Retefuente</span>
+          <span class="font-display font-bold text-white text-lg">3.5%</span>
+        </div>
+        <p class="text-xs text-white/50 leading-relaxed">Sobre el valor antes de IVA, cuando supera la base de ley y el cliente es empresa o intermediario obligado a retener.</p>
+      </div>
+      <div class="rv d2 glass-strong rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-3">
+          <span class="chip">ReteICA</span>
+          <span class="font-display font-bold text-white text-lg">9.66 ‰</span>
+        </div>
+        <p class="text-xs text-white/50 leading-relaxed">Sobre el valor antes de IVA (por mil), cuando el cliente tiene sede o domicilio en Bogotá.</p>
+      </div>
+      <div class="rv d3 glass-strong rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-3">
+          <span class="chip">ReteIVA</span>
+          <span class="font-display font-bold text-white text-lg">15%</span>
+        </div>
+        <p class="text-xs text-white/50 leading-relaxed">Sobre el valor del IVA de la reserva, cuando el cliente es de régimen simple.</p>
+      </div>
+    </div>
+
+    <!-- feature checklist -->
+    <div class="rv d2 glass rounded-2xl p-6 md:p-8">
+      <div class="text-[10px] text-white/35 uppercase tracking-wider mb-5">El paquete completo</div>
+      <div class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-sm text-white/60">
+        <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5"></i><span>Tres controles independientes en el detalle de la reserva, con el monto calculado en vivo</span></div>
+        <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5"></i><span>Cálculo sobre toda la base facturable (hospedaje + servicios + cargos), antes de IVA</span></div>
+        <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5"></i><span>La factura se mantiene por el valor completo — la retención solo ajusta lo que paga el huésped</span></div>
+        <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5"></i><span>Saldo pendiente recalculado automáticamente en todo el sistema</span></div>
+        <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5"></i><span>Check-out habilitado cuando el único "saldo" eran retenciones</span></div>
+        <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5"></i><span>Columnas discriminadas (Retefuente, ReteICA, ReteIVA) + total en el informe descargable</span></div>
+        <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5"></i><span>Permisos por rol: solo administración y recepción pueden aplicarlas</span></div>
+        <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5"></i><span>Registro en el historial de la reserva: qué retención se aplicó y quién la aplicó</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EL ESFUERZO -->
+<section id="esfuerzo" class="relative z-10 py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="lbl rv mb-4">El esfuerzo, explicado</div>
+    <h2 class="rv d1 font-display font-bold leading-tight mb-4" style="font-size:clamp(1.8rem,4.5vw,2.8rem)">
+      <span class="tgw">Por qué esto es un</span> <span class="sa tgg">desarrollo Nivel L.</span>
+    </h2>
+    <p class="rv d2 text-white/45 leading-relaxed max-w-2xl mb-10">
+      No es agregar un campo. Es lógica contable que cruza reservas, caja y reportes, y que debe quedar
+      perfectamente coherente en toda la plataforma. Esto es lo que hay detrás:
+    </p>
+
+    <div class="flex flex-col gap-4">
+
+      <div class="rv d1 glass rounded-2xl p-6 md:p-7 hc flex flex-col md:flex-row gap-5">
+        <div class="sb mt-1">1</div>
+        <div class="flex-1">
+          <h3 class="font-display font-semibold text-white mb-1.5">Modelo de datos contable</h3>
+          <p class="text-sm text-white/50 leading-relaxed">
+            Crear las estructuras para guardar, por cada reserva, cuáles de las tres retenciones se aplicaron, su monto y
+            su tasa — sin romper los cálculos financieros que ya funcionan. La base de datos pasa a entender un concepto
+            nuevo que antes no existía.
+          </p>
+        </div>
+      </div>
+
+      <div class="rv d2 glass rounded-2xl p-6 md:p-7 hc flex flex-col md:flex-row gap-5">
+        <div class="sb mt-1">2</div>
+        <div class="flex-1">
+          <h3 class="font-display font-semibold text-white mb-1.5">Tres fórmulas distintas sobre la base correcta</h3>
+          <p class="text-sm text-white/50 leading-relaxed">
+            Retefuente y ReteICA se calculan sobre el valor antes de IVA de <em>todo</em> lo que se factura (hospedaje,
+            servicios extras y cargos); ReteIVA se calcula sobre el IVA total. Hay que unificar esa base —que hoy vive
+            repartida en varios lados— y aplicar cada regla por separado, de forma que coincida al peso con lo que
+            contabilidad espera.
+          </p>
+        </div>
+      </div>
+
+      <div class="rv d3 glass rounded-2xl p-6 md:p-7 hc flex flex-col md:flex-row gap-5">
+        <div class="sb mt-1">3</div>
+        <div class="flex-1">
+          <h3 class="font-display font-semibold text-white mb-1.5">Interfaz y control en el detalle de la reserva</h3>
+          <p class="text-sm text-white/50 leading-relaxed">
+            Tres controles para activar cada retención, con el monto calculándose en vivo a medida que se marcan,
+            los permisos por rol y el registro en el historial. Tiene que ser claro para recepción y, a la vez,
+            no romper la lógica del descuento y el IVA que ya conviven en esa misma pantalla.
+          </p>
+        </div>
+      </div>
+
+      <div class="rv d4 glass-gold rounded-2xl p-6 md:p-7 flex flex-col md:flex-row gap-5">
+        <div class="sb mt-1" style="background:rgba(232,194,122,.15);border-color:rgba(232,194,122,.3);color:#f0d9a8">4</div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+            <h3 class="font-display font-semibold text-white">Recálculo del saldo en toda la plataforma</h3>
+            <span class="chip" style="background:rgba(232,194,122,.12);border-color:rgba(232,194,122,.25);color:#f0d9a8">el grueso del trabajo</span>
+          </div>
+          <p class="text-sm text-white/55 leading-relaxed">
+            El "saldo pendiente" no se calcula en un solo lugar: aparece en el <strong>calendario</strong>, en el
+            <strong>detalle de la reserva</strong>, en el <strong>bloqueo de check-out</strong>, en el
+            <strong>dashboard</strong> y en el <strong>informe descargable</strong>. Las cinco vistas tienen que restar
+            las retenciones de forma idéntica. Si una sola queda desfasada, reaparece el saldo falso justo en el lugar
+            donde más confía el equipo. Esta coherencia transversal es la verdadera complejidad de este desarrollo.
+          </p>
+        </div>
+      </div>
+
+      <div class="rv d5 glass rounded-2xl p-6 md:p-7 hc flex flex-col md:flex-row gap-5">
+        <div class="sb mt-1">5</div>
+        <div class="flex-1">
+          <h3 class="font-display font-semibold text-white mb-1.5">Reporte contable y trazabilidad</h3>
+          <p class="text-sm text-white/50 leading-relaxed">
+            Columnas separadas para cada retención más un total en el informe descargable, para que la persona de
+            facturación tenga exactamente la trazabilidad que pidió y pueda declarar cada concepto por su lado.
+          </p>
+        </div>
+      </div>
+
+      <div class="rv d6 glass rounded-2xl p-6 md:p-7 hc flex flex-col md:flex-row gap-5">
+        <div class="sb mt-1">6</div>
+        <div class="flex-1">
+          <h3 class="font-display font-semibold text-white mb-1.5">Pruebas con casos reales</h3>
+          <p class="text-sm text-white/50 leading-relaxed">
+            Validar con una reserva real que hoy arrastra un saldo falso por retención: confirmar que el saldo queda en
+            cero, que el check-out se habilita, que la factura sigue completa y que el informe cuadra. Por ser un módulo
+            contable, cada número se verifica al peso antes de entregar.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRECIO -->
+<section id="precio" class="relative z-10 py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="rv glass-strong rounded-3xl p-8 md:p-12 relative overflow-hidden">
+      <div class="absolute top-0 right-0 -mr-20 -mt-20 w-60 h-60 rounded-full bg-accent/10 blur-3xl pointer-events-none"></div>
+
+      <div class="relative grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <div class="flex items-center gap-3 mb-4 flex-wrap">
+            <span class="lv lv-l">L · COMPLEJO</span>
+            <span class="text-xs text-white/40">Lógica que cruza reservas · contabilidad · reportes</span>
+          </div>
+          <h2 class="font-display font-bold leading-tight mb-4" style="font-size:clamp(1.8rem,4vw,2.6rem)">
+            <span class="tgw">Módulo completo de</span> <span class="sa tgg">retenciones.</span>
+          </h2>
+          <p class="text-sm text-white/50 leading-relaxed">
+            Precio cerrado para todo el alcance descrito. No se cobra por hora: pagas por el módulo funcionando
+            en tu plataforma, validado con casos reales.
+          </p>
+        </div>
+
+        <div class="md:text-right">
+          <div class="text-[11px] text-white/40 uppercase tracking-wider mb-1">Precio cerrado</div>
+          <div class="font-display font-bold text-white" style="font-size:clamp(2.6rem,7vw,3.6rem)">$1.900.000</div>
+          <div class="text-xs text-white/35 mb-6">COP · alcance cerrado</div>
+          <div class="flex flex-col gap-2 md:items-end text-xs text-white/55">
+            <div class="flex items-center gap-2"><i data-lucide="wallet" class="w-3.5 h-3.5 text-indigo-300"></i> 50% al aprobar · 50% al entregar</div>
+            <div class="flex items-center gap-2"><i data-lucide="zap" class="w-3.5 h-3.5 text-indigo-300"></i> Entrega prioritaria: 3 – 4 días hábiles</div>
+            <div class="flex items-center gap-2"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-indigo-300"></i> Garantía de 30 días</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dv my-8"></div>
+
+      <div class="grid sm:grid-cols-3 gap-5 text-xs text-white/50">
+        <div class="flex items-start gap-2"><i data-lucide="file-signature" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i><span><span class="text-white/75 font-medium">Alcance cerrado.</span> Lo descrito en este documento es lo que se entrega, al precio fijo.</span></div>
+        <div class="flex items-start gap-2"><i data-lucide="layers" class="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5"></i><span><span class="text-white/75 font-medium">Aparte del retainer.</span> No consume ni reemplaza el mantenimiento mensual de la operación.</span></div>
+        <div class="flex items-start gap-2"><i data-lucide="shield-check" class="w-4 h-4 text-gold flex-shrink-0 mt-0.5"></i><span><span class="text-white/75 font-medium">Garantía.</span> Si algo falla por un error nuestro, lo corregimos sin costo el primer mes.</span></div>
+      </div>
+    </div>
+
+    <p class="rv text-center text-xs text-white/30 mt-8 max-w-xl mx-auto leading-relaxed">
+      Este desarrollo se enmarca en el catálogo de Desarrollos Adicionales — Nivel L · Complejo.
+    </p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="relative z-10 py-20 px-6 text-center overflow-hidden">
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div class="w-80 h-80 rounded-full bg-accent/10 blur-3xl"></div>
+  </div>
+  <div class="max-w-2xl mx-auto relative">
+    <h2 class="rv font-display font-bold leading-tight mb-6" style="font-size:clamp(2rem,5vw,3.2rem)">
+      <span class="tgw">¿Arrancamos con las</span> <span class="sa tgg">retenciones?</span>
+    </h2>
+    <p class="rv d2 text-white/45 mb-10 max-w-lg mx-auto leading-relaxed">
+      Con tu visto bueno y el 50% inicial, lo dejamos funcionando en pocos días, a tiempo para tu facturación.
+    </p>
+    <a href="https://wa.me/573112634779?text=Hola%20Nicol%C3%A1s%2C%20aprobamos%20el%20desarrollo%20de%20retenciones." target="_blank" rel="noopener"
+       class="rv d3 inline-flex items-center justify-center gap-2 px-12 py-4 rounded-full bg-accent text-white font-bold text-sm hover:bg-indigo-500 transition-all shadow-2xl shadow-accent/30">
+      <i data-lucide="message-circle" class="w-4 h-4"></i> Aprobar y arrancar
+    </a>
+  </div>
+</section>
+
+<footer class="relative z-10 py-8 px-6 border-t border-white/[.05]">
+  <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-white/25">
+    <div>Molu Studio × OPE Suites · Propuesta de desarrollo — Retenciones</div>
+    <div>Junio 2026 · Documento confidencial</div>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+  }, { threshold:0.08, rootMargin:'0px 0px -30px 0px' });
+  document.querySelectorAll('.rv').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('on');
+    else obs.observe(el);
+  });
+  const sp = document.getElementById('sp');
+  window.addEventListener('scroll', () => {
+    sp.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100) + '%';
+  }, { passive:true });
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => { const t = document.querySelector(a.getAttribute('href')); if (t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); } });
+  });
+</script>
+</body>
+</html>
