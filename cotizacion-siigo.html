@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cotización · Facturación automática con Siigo — molu × Kaza Living</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#151f27;--bg-darker:#10181f;--bg-card:#1b2731;--border:#2a3540;--text:#f4f6f5;--text-2:#a9b8c4;--muted:#7b92a5;--accent:#29ffad;--sans:'Hanken Grotesk',system-ui,sans-serif;--serif:'Instrument Serif',serif;--mono:'IBM Plex Mono',monospace}
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  .serif{font-family:var(--serif);font-style:italic;font-weight:400}
+  .wrap{max-width:1000px;margin:0 auto}
+  .nav{position:sticky;top:0;z-index:50;background:var(--bg);display:flex;justify-content:space-between;align-items:center;padding:20px clamp(20px,4vw,48px);border-bottom:1px solid var(--border)}
+  .logo{font-weight:800;font-size:24px;letter-spacing:-.04em;display:inline-flex;align-items:baseline;text-decoration:none;color:var(--text)}
+  .logo .dot{width:5px;height:5px;background:var(--accent);display:inline-block;margin-left:3px}
+  .nav-right{font-family:var(--mono);font-size:13px;color:var(--accent);text-decoration:none}
+  .nav-right:hover{text-decoration:underline}
+  .block{padding:clamp(48px,8vh,80px) clamp(20px,4vw,48px);border-bottom:1px solid var(--border)}
+  .lbl{font-family:var(--mono);font-size:12px;color:var(--muted);margin-bottom:18px}
+  .h2{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.06;margin:0 0 16px;max-width:820px}
+  .h2 em{font-family:var(--serif);font-weight:400;font-style:italic;color:var(--accent)}
+  .sub{font-size:clamp(15px,1.4vw,17px);line-height:1.6;color:var(--text-2);max-width:680px;margin:0}
+  .hero{padding:clamp(52px,9vh,100px) clamp(20px,4vw,48px) clamp(44px,7vh,72px);border-bottom:1px solid var(--border)}
+  .hero-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-bottom:clamp(26px,5vh,48px)}
+  .hero h1{margin:0;font-size:clamp(40px,6vw,76px);line-height:1.05;letter-spacing:-.04em;font-weight:800;max-width:940px}
+  .hero h1 em{font-family:var(--serif);font-weight:400;font-style:italic;color:var(--accent);transition:letter-spacing .5s ease}
+  .hero h1 em:hover{letter-spacing:.04em}
+  .hero-foot{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:32px;margin-top:clamp(30px,5vh,48px)}
+  .hero-lede{margin:0;font-size:clamp(16px,1.5vw,19px);line-height:1.55;max-width:600px;color:var(--text-2)}
+  .seal{flex:none;border:2px solid var(--accent);color:var(--accent);border-radius:999px;padding:12px 24px;font-family:var(--mono);font-size:13px;transform:rotate(-4deg);white-space:nowrap}
+  .marquee{overflow:hidden;padding:13px 0;background:var(--accent);color:var(--bg);border-bottom:1px solid var(--border)}
+  .marquee-track{display:flex;width:max-content;white-space:nowrap;animation:mq 26s linear infinite}
+  .marquee-track span{font-family:var(--serif);font-style:italic;font-size:clamp(19px,2.1vw,27px);padding-right:20px}
+  @keyframes mq{to{transform:translateX(-50%)}}
+  .lift{transition:transform .22s cubic-bezier(.22,.61,.36,1),box-shadow .22s cubic-bezier(.22,.61,.36,1),border-color .22s ease}
+  .lift:hover{border-color:var(--accent);transform:translate(-3px,-3px);box-shadow:7px 7px 0 -1px var(--accent)}
+  .tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:36px}
+  .tier{border:1px solid var(--border);background:var(--bg-card);padding:24px 22px;display:flex;flex-direction:column}
+  .tier .lv{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;padding:4px 10px;border:1px solid var(--border);border-radius:999px;width:fit-content;color:var(--muted)}
+  .tier.on{border-color:var(--accent)}
+  .tier.on .lv{color:var(--accent);border-color:var(--accent)}
+  .tier .desc{font-size:13px;line-height:1.55;color:var(--muted);margin:14px 0;flex:1}
+  .tier .price{border-top:1px solid var(--border);padding-top:12px}
+  .tier .price .from{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px}
+  .tier .price .val{font-size:20px;font-weight:800;letter-spacing:-.02em}
+  .tier .price .cur{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px}
+  .tiers-note{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:20px}
+  .tiers-note b{color:var(--accent);font-weight:500}
+  .reco{margin-top:36px;border:1px solid var(--accent);background:rgba(41,255,173,.06);padding:26px clamp(22px,3vw,32px)}
+  .reco .k{font-family:var(--mono);font-size:11.5px;color:var(--accent);margin-bottom:12px}
+  .reco p{margin:0;font-size:15px;line-height:1.7;color:var(--text)}
+  .fases{display:flex;flex-direction:column;gap:18px;margin-top:36px}
+  .fase{border:1px solid var(--border);background:var(--bg-card);padding:28px clamp(22px,3vw,34px);display:flex;gap:28px;flex-wrap:wrap}
+  .fase .main{flex:1;min-width:260px}
+  .fase .top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .fase .tag{font-family:var(--mono);font-size:11px;color:var(--accent)}
+  .fase h3{margin:0;font-size:21px;font-weight:800;letter-spacing:-.02em;transition:font-weight .4s ease}
+  .fase:hover h3{font-weight:400}
+  .fase .lv{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.06em;padding:3px 9px;border:1px solid var(--accent);border-radius:999px;color:var(--accent)}
+  .fase .desc{margin:2px 0 16px;font-size:14.5px;line-height:1.6;color:var(--text-2)}
+  .fase ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+  .fase li{font-size:13.5px;line-height:1.5;color:var(--text-2);display:flex;gap:10px}
+  .fase li::before{content:"→";color:var(--accent);flex:none}
+  .fase .note{margin:14px 0 0;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+  .fase .val{flex:none;text-align:right;min-width:150px;padding-left:26px;border-left:1px solid var(--border)}
+  .fase .val .from{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px}
+  .fase .val .n{font-size:24px;font-weight:800;letter-spacing:-.02em}
+  .fase .val .cur{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px}
+  @media(max-width:640px){.fase .val{padding-left:0;border-left:0;text-align:left;min-width:0}}
+  .total{margin-top:22px;border:1px solid var(--accent);background:rgba(41,255,173,.06);padding:22px clamp(22px,3vw,34px);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  .total .t-l{font-size:16px;font-weight:700}
+  .total .t-l span{font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400;display:block;margin-top:4px}
+  .total .t-r{font-size:28px;font-weight:800;letter-spacing:-.02em;color:var(--accent)}
+  .efforts{display:flex;flex-direction:column;gap:14px;margin-top:36px}
+  .effort{border:1px solid var(--border);background:var(--bg-card);padding:24px 26px}
+  .effort .top{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+  .effort .lv{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.06em;padding:3px 9px;border:1px solid var(--accent);border-radius:999px;color:var(--accent)}
+  .effort h3{margin:0;font-size:18px;font-weight:800;letter-spacing:-.02em}
+  .effort p{margin:0;font-size:14px;line-height:1.65;color:var(--text-2)}
+  .quest{margin-top:36px;border:1px solid var(--border);background:var(--bg-darker);padding:26px clamp(22px,3vw,30px)}
+  .quest .k{font-family:var(--mono);font-size:11.5px;color:var(--accent);margin-bottom:14px}
+  .quest ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:11px}
+  .quest li{font-size:14px;line-height:1.55;color:var(--text-2);display:flex;gap:10px}
+  .quest li::before{content:"?";color:var(--accent);flex:none;font-family:var(--mono)}
+  .conds{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:36px}
+  .cond{border:1px solid var(--border);background:var(--bg-card);padding:24px}
+  .cond .k{font-family:var(--mono);font-size:11.5px;color:var(--accent);margin-bottom:10px}
+  .cond h3{margin:0 0 8px;font-size:16px;font-weight:800;letter-spacing:-.02em}
+  .cond p{margin:0;font-size:13.5px;line-height:1.6;color:var(--muted)}
+  .cta{padding:clamp(52px,10vh,92px) clamp(20px,4vw,48px);text-align:center}
+  .cta .lbl{margin-bottom:20px}
+  .cta h2{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(40px,7vw,78px);letter-spacing:-.03em;line-height:1;margin:0 0 28px}
+  .btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--bg);font-weight:800;font-size:14px;padding:14px 32px;text-decoration:none;transition:transform .15s ease}
+  .btn:active{transform:translate(1px,2px)}
+  .wm-wrap{border-top:1px solid var(--border);overflow:hidden;height:clamp(80px,13vw,160px);position:relative}
+  .wm{font-weight:800;font-size:clamp(140px,24vw,320px);letter-spacing:-.06em;line-height:.72;text-align:center;transform:translateY(8px);color:var(--accent)}
+  .wm .dot{width:.16em;height:.16em;background:var(--accent);display:inline-block;margin-left:.04em}
+  .foot-bar{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:18px clamp(20px,4vw,48px);border-top:1px solid var(--border);font-family:var(--mono);font-size:12px;color:var(--muted)}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.marquee-track{animation:none}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="#">molu<span class="dot"></span></a>
+  <a class="nav-right" href="https://wa.me/573112634779">hablemos →</a>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-meta"><span>/ cotización · facturación siigo</span><span>molu × Kaza Living</span></div>
+    <h1>Que la factura <em>se genere sola.</em></h1>
+    <div class="hero-foot">
+      <p class="hero-lede">Hoy facturación crea cada factura a mano en Siigo con los datos del CRM. La idea: que el CRM le hable directo a Siigo y la factura salga sola, para liberar ese tiempo administrativo.</p>
+      <span class="seal">por fases</span>
+    </div>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>checkout → factura → dian ·</span>
+    <span>construyo con IA, decido con oficio ·</span>
+    <span>checkout → factura → dian ·</span>
+    <span>construyo con IA, decido con oficio ·</span>
+  </div>
+</div>
+
+<section class="block">
+  <div class="wrap">
+    <div class="lbl">/ niveles</div>
+    <h2 class="h2">Rangos de <em>precio.</em></h2>
+    <p class="sub">Los desarrollos entran en cuatro tallas según su complejidad. No cobro por horas: el precio se cierra al definir el alcance. Esta es un proyecto en sí mismo, y cae en XL.</p>
+    <div class="tiers">
+      <div class="tier lift"><span class="lv">S · sencillo</span><p class="desc">Un cambio acotado, sin lógica nueva: un campo, un botón, un documento.</p><div class="price"><div class="from">desde</div><div class="val">$250.000 – 400.000</div><div class="cur">COP</div></div></div>
+      <div class="tier lift"><span class="lv">M · mediano</span><p class="desc">Un dato o servicio nuevo con su lógica: mostrar o calcular algo que antes no existía.</p><div class="price"><div class="from">desde</div><div class="val">$600.000 – 900.000</div><div class="cur">COP</div></div></div>
+      <div class="tier lift"><span class="lv">L · complejo</span><p class="desc">Lógica que cruza varios módulos o una integración externa, con estados y consecuencias.</p><div class="price"><div class="from">desde</div><div class="val">$1.500.000 – 2M</div><div class="cur">COP</div></div></div>
+      <div class="tier lift on"><span class="lv">XL · transversal</span><p class="desc">Un proyecto en sí: toca toda la plataforma, la infraestructura o la identidad.</p><div class="price"><div class="from">desde</div><div class="val">$3.000.000<span style="font-size:13px;color:var(--muted)">+</span></div><div class="cur">COP</div></div></div>
+    </div>
+    <p class="tiers-note">Esta cotización = un <b>proyecto XL</b> —la integración completa—, entregado en <b>3 fases</b> para arrancar con lo esencial y sin riesgo.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="lbl">/ mi recomendación</div>
+    <h2 class="h2">Por <em>fases,</em> y empezando en borrador.</h2>
+    <div class="reco">
+      <div class="k">/ el porqué</div>
+      <p>Arranca por la Fase 1. Emitir una factura a la DIAN es irreversible, así que empezar dejándola en <strong>borrador</strong> para que facturación le dé el visto bueno nos deja validar que todo salga perfecto sin ningún riesgo — y aun así te libera la mayor parte del trabajo manual. Cuando esté probado, la Fase 2 la pasa a automática al check-out. La Fase 3 son los casos avanzados, que activas cuando los necesites.</p>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="lbl">/ las fases</div>
+    <h2 class="h2">Tres pasos hacia <em>facturar solo.</em></h2>
+    <div class="fases">
+      <div class="fase lift">
+        <div class="main">
+          <div class="top"><span class="tag">fase 01</span><h3>Conexión + factura base (en borrador)</h3></div>
+          <p class="desc">La base de todo: el CRM ya arma la factura en Siigo, lista para que facturación la revise y emita.</p>
+          <ul>
+            <li>Conexión segura con tu Siigo (autenticación + registro de la app ante Siigo).</li>
+            <li>Mapeo de cada concepto que cobras (hospedaje, extras, parqueadero, lavandería, persona adicional, cargos) a su producto en Siigo, con su impuesto.</li>
+            <li>El CRM arma la factura por reserva —todo incluido, exentos sin IVA, con las retenciones— y la deja en borrador en Siigo. El número de factura y su estado vuelven al CRM.</li>
+          </ul>
+          <p class="note">ya libera la mayor parte del trabajo manual · el riesgo baja a cero</p>
+        </div>
+        <div class="val"><div class="from">precio</div><div class="n">$2.500.000</div><div class="cur">COP</div></div>
+      </div>
+
+      <div class="fase lift">
+        <div class="main">
+          <div class="top"><span class="tag">fase 02</span><h3>Emisión automática + facturación parcial</h3></div>
+          <p class="desc">Pasar de borrador a que salga sola, y manejar las facturas antes del check-out.</p>
+          <ul>
+            <li>Emisión automática al hacer el check-out, con un aviso de "revisa el financiero" antes de cerrar.</li>
+            <li>El motor que lleva la cuenta de qué ya se facturó: factura solo lo que faltó y nunca factura doble.</li>
+            <li>Un botón "Facturar" para emitir antes del check-out cuando el huésped lo pide (por ejemplo, si la empresa se lo exige).</li>
+          </ul>
+          <p class="note">quita el paso manual del día a día</p>
+        </div>
+        <div class="val"><div class="from">precio</div><div class="n">$2.200.000</div><div class="cur">COP</div></div>
+      </div>
+
+      <div class="fase lift">
+        <div class="main">
+          <div class="top"><span class="tag">fase 03</span><h3>Facturación dividida, anticipos y notas crédito</h3></div>
+          <p class="desc">Los casos especiales que rompen el "una factura por reserva".</p>
+          <ul>
+            <li>Varias facturas por reserva a distintos terceros (el alojamiento a una empresa, los extras a la persona), con el IVA según a quién se factura.</li>
+            <li>Los anticipos registrados en Siigo y cruzados con la factura final del mismo tercero.</li>
+            <li>Notas crédito generadas desde el CRM para cancelaciones después de facturar.</li>
+          </ul>
+          <p class="note">actívalos cuando los necesites</p>
+        </div>
+        <div class="val"><div class="from">precio</div><div class="n">$2.800.000</div><div class="cur">COP</div></div>
+      </div>
+    </div>
+
+    <div class="total"><div class="t-l">Las tres fases<span>si haces la integración completa</span></div><div class="t-r">$7.500.000 COP</div></div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="lbl">/ por qué este precio</div>
+    <h2 class="h2">El esfuerzo, <em>explicado.</em></h2>
+    <p class="sub">Facturar de verdad, solo y bien, es mucho más que "crear una factura". Te cuento qué hay detrás de cada fase.</p>
+    <div class="efforts">
+      <div class="effort lift"><div class="top"><span class="lv">Fase 1</span><h3>La conexión y el mapeo</h3></div><p>Es montar toda la conexión con Siigo: autenticarse, registrar la app (un trámite con Siigo que suma tiempo no controlable por mí), mapear cada concepto que cobras a su producto en Siigo con el impuesto correcto, y armar la factura respetando exentos y retenciones. A favor: tu cuenta ya está lista (plan Premium, factura electrónica configurada, productos creados, un solo NIT), así que no hay que arreglar nada de eso.</p></div>
+      <div class="effort lift"><div class="top"><span class="lv">Fase 2</span><h3>El motor con memoria</h3></div><p>Aquí vive la parte delicada: el sistema tiene que llevar la cuenta de qué se facturó y qué no, para facturar solo lo que falta y nunca duplicar. Y como se emite solo a la DIAN —que es irreversible— hay que blindarlo con validaciones y el aviso de revisar el financiero antes del check-out. Cruza el mundo de las reservas con el de la facturación.</p></div>
+      <div class="effort lift"><div class="top"><span class="lv">Fase 3</span><h3>Los casos que se salen del molde</h3></div><p>Partir una reserva en varias facturas a distintos nombres (con el IVA cambiando según el destinatario), registrar y cruzar anticipos, y emitir notas crédito. Cada uno es un flujo contable propio dentro de Siigo, con sus reglas.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="lbl">/ antes de arrancar</div>
+    <h2 class="h2">Lo que necesito <em>confirmar.</em></h2>
+    <p class="sub">Con estas respuestas cierro el detalle de cada fase. Nada urgente para decidir si vamos — sí para el detalle de la Fase 3 y el arranque.</p>
+    <div class="quest">
+      <div class="k">/ preguntas por definir</div>
+      <ul>
+        <li>Cómo elige recepción qué concepto va a cada factura cuando el huésped pide dividirla (la forma de hacerlo en la pantalla).</li>
+        <li>Cómo y cuándo se capturan los datos del tercero-empresa (NIT, razón social) al momento de facturar.</li>
+        <li>El detalle de cómo registran y cruzan los anticipos hoy en tu Siigo.</li>
+        <li>El mapeo detallado de cada concepto del CRM a su producto o servicio en Siigo (lo cerramos con la persona de facturación).</li>
+        <li>Más adelante: las credenciales de la API y el registro de la app ante Siigo — es una dependencia externa, con los tiempos de ellos.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="lbl">/ condiciones</div>
+    <h2 class="h2">Reglas claras, <em>cero sorpresas.</em></h2>
+    <div class="conds">
+      <div class="cond lift"><div class="k">pago</div><h3>50% al aprobar · 50% al entregar</h3><p>Por fase: pagas cada fase cuando la ves funcionando.</p></div>
+      <div class="cond lift"><div class="k">alcance</div><h3>Cerrado por escrito</h3><p>El precio es fijo para el alcance de cada fase, acordado antes de arrancar.</p></div>
+      <div class="cond lift"><div class="k">garantía</div><h3>30 días</h3><p>Si algo entregado falla por un error mío, lo corrijo sin costo el primer mes.</p></div>
+      <div class="cond lift"><div class="k">retainer</div><h3>Aparte de la operación</h3><p>Esta integración no consume ni reemplaza el retainer mensual del día a día.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap"><div class="lbl">/ ¿arrancamos?</div><h2>Automatizo tu facturación.</h2><a class="btn" href="https://wa.me/573112634779">Hablemos →</a></div>
+</section>
+
+<div class="wm-wrap"><div class="wm">molu<span class="dot"></span></div></div>
+<div class="foot-bar"><span>molu × Kaza Living · facturación automática con Siigo</span><span>julio 2026 · documento confidencial</span></div>
+
+</body>
+</html>
